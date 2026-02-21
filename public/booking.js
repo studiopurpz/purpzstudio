@@ -133,7 +133,7 @@ function calculatePrice(){
     if(day===0||day===6){
       rate=(hour>=6 && hour<23)?100:120
     } else {
-      rate=(hour>=6 && hour<23)?80:100
+      rate=(hour>=6 && hour<23)?1:100
     }
     total+=rate
     current=new Date(current.getTime()+60*60*1000)
