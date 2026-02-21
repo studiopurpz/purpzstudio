@@ -79,23 +79,21 @@ async function renderCalendar(){
 
 // pokaz panel z zajętymi godzinami
 function showDayInfo(dateStr){
-  title.innerText = dateStr
-  list.innerHTML = ""
+  title.innerText=dateStr
+  list.innerHTML=""
+  const dayReservations=reservations[dateStr]
 
-  const dayReservations = reservations[dateStr]
-
-  if(!dayReservations || dayReservations.length === 0){
-    list.innerHTML = '<div class="free-text">W tym dniu wszystkie godziny są wolne</div>'
+  if(!dayReservations || dayReservations.length===0){
+    list.innerHTML='<div class="free-text">W tym dniu wszystkie godziny są wolne</div>'
   } else {
-    list.innerHTML = "<b>Zarezerwowane godziny:</b><br><br>"
-    dayReservations.forEach(hour => {
-      const div = document.createElement("div")
-      div.className = "reserved-block"
-      div.innerText = hour
+    list.innerHTML="<b>Zarezerwowane godziny:</b><br><br>"
+    dayReservations.forEach(r=>{
+      const div=document.createElement("div")
+      div.className="reserved-block"
+      div.innerText=`${r.start} – ${r.end}`
       list.appendChild(div)
     })
   }
-
   panel.classList.remove("hidden")
 }
 
@@ -135,7 +133,7 @@ function calculatePrice(){
     if(day===0||day===6){
       rate=(hour>=6 && hour<23)?100:120
     } else {
-      rate=(hour>=6 && hour<23)?2:100
+      rate=(hour>=6 && hour<23)?80:100
     }
     total+=rate
     current=new Date(current.getTime()+60*60*1000)

@@ -93,13 +93,17 @@ app.post('/webhook', bodyParser.raw({type:'application/json'}), (req, res) => {
     let end = new Date(endDate + 'T' + endHour)
     if(end <= start) end = new Date(start.getTime() + 60*60*1000)
 
-    while(start < end){
-      const d = start.toISOString().split('T')[0]
-      const h = start.getHours().toString().padStart(2,'0') + ":00"
-      if(!reservations[d]) reservations[d] = []
-      if(!reservations[d].includes(h)) reservations[d].push(h)
-      start = new Date(start.getTime() + 60*60*1000)
-    }
+while(start < end){
+  const d = start.toISOString().split('T')[0]
+  const hStart = start.getHours().toString().padStart(2,'0') + ":00"
+  const nextHour = new Date(start.getTime() + 60*60*1000)
+  const hEnd = nextHour.getHours().toString().padStart(2,'0') + ":00"
+
+  if(!reservations[d]) reservations[d] = []
+  reservations[d].push({ start: hStart, end: hEnd })
+
+  start = nextHour
+}
 
     saveReservations(reservations)
     console.log(`Zapisano rezerwację po płatności: ${session.id}`)
