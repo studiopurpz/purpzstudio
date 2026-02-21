@@ -161,7 +161,7 @@ reserveBtn.onclick = async () => {
   if(end<=start) {alert("Minimalna rezerwacja to 1 godzina"); return}
 
   try {
-    const res = await fetch('http://localhost:4242/create-checkout-session', {
+    const res = await fetch('https://purpzstudio.pl/create-checkout-session', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
