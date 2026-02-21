@@ -13,6 +13,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
+console.log("Stripe key:", process.env.STRIPE_KEY ? "OK" : "BRAK");
+console.log("Webhook secret:", process.env.WEBHOOK_SECRET ? "OK" : "BRAK");
 // helper do odczytu rezerwacji
 function readReservations(){
   try {
