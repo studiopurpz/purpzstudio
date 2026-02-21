@@ -79,27 +79,23 @@ async function renderCalendar(){
 
 // pokaz panel z zajętymi godzinami
 function showDayInfo(dateStr){
-  title.innerText=dateStr
-  list.innerHTML=""
-  const dayReservations=reservations[dateStr]
+  title.innerText = dateStr
+  list.innerHTML = ""
 
-  if(!dayReservations || dayReservations.length===0){
-    list.innerHTML='<div class="free-text">W tym dniu wszystkie godziny są wolne</div>'
+  const dayReservations = reservations[dateStr]
+
+  if(!dayReservations || dayReservations.length === 0){
+    list.innerHTML = '<div class="free-text">W tym dniu wszystkie godziny są wolne</div>'
   } else {
-    list.innerHTML="<b>Zarezerwowane godziny:</b><br><br>"
-    dayReservations.forEach(h=>{
-  const div = document.createElement("div")
-  div.className = "reserved-block"
-
-  // obliczamy godzinę końcową jako +1h
-  const startHour = h
-  const [hourStr, minute] = h.split(":")
-  const endHour = (parseInt(hourStr)+1).toString().padStart(2,'0') + ":" + minute
-
-  div.innerText = `${startHour} – ${endHour}`
-  list.appendChild(div)
-})
+    list.innerHTML = "<b>Zarezerwowane godziny:</b><br><br>"
+    dayReservations.forEach(hour => {
+      const div = document.createElement("div")
+      div.className = "reserved-block"
+      div.innerText = hour
+      list.appendChild(div)
+    })
   }
+
   panel.classList.remove("hidden")
 }
 
