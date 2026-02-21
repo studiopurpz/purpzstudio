@@ -10,11 +10,11 @@ const startHourSelect = document.getElementById("startHour")
 const endHourSelect = document.getElementById("endHour")
 const priceDisplay = document.getElementById("price")
 const reserveBtn = document.getElementById("reserveBtn")
-const promoCodeInput = document.getElementById("promoCode") // nowe pole
+const promoCodeInput = document.getElementById("promoCode")
 
 let currentDate = new Date()
-let reservations = {} // tu wczytamy z backendu
-let discount = 0 // procentowa zniżka
+let reservations = {} 
+let discount = 0 
 
 // godziny 0-23
 const hours=[]
@@ -93,7 +93,14 @@ async function renderCalendar(){
       if(status==="free") div.classList.add("fully-free")
       if(status==="partial") div.classList.add("partially-booked")
       if(status==="full") div.classList.add("fully-booked")
-      div.onclick=()=>showDayInfo(dateStr)
+      div.onclick=()=>{
+        showDayInfo(dateStr)
+
+        // Ustawienie daty w panelu rezerwacji
+        startDateInput.value = dateStr
+        endDateInput.value = dateStr
+        calculatePrice()
+      }
     }
 
     calendar.appendChild(div)
@@ -119,7 +126,6 @@ function showDayInfo(dateStr){
   }
   panel.classList.remove("hidden")
 
-  // blokujemy godziny zajęte w selectach
   fillHourSelects(dateStr)
 }
 
@@ -150,7 +156,7 @@ function calculatePrice(){
 
   let start=new Date(sDate+"T"+sHour)
   let end=new Date(eDate+"T"+eHour)
-  if(end<=start) end=new Date(end.getTime()+60*60*1000) // min 1h
+  if(end<=start) end=new Date(end.getTime()+60*60*1000)
 
   let total=0
   let current=new Date(start)
@@ -167,7 +173,6 @@ function calculatePrice(){
     current=new Date(current.getTime()+60*60*1000)
   }
 
-  // obsługa kodu promocyjnego
   const code = promoCodeInput.value.trim()
   if(code === "PURPZ15") discount = 15
   else discount = 0
@@ -196,7 +201,6 @@ reserveBtn.onclick = async () => {
   let start = new Date(sDate+"T"+sHour)
   let end = new Date(eDate+"T"+eHour)
 
-  // 48h blokada
   const now = new Date()
   const diffHours = (start.getTime() - now.getTime()) / (1000*60*60)
   if(diffHours < 48){
@@ -204,7 +208,6 @@ reserveBtn.onclick = async () => {
     return
   }
 
-  // sprawdzenie czy godziny nie są zajęte
   const startHourInt = parseInt(sHour.split(":")[0])
   for(let h=startHourInt; h<parseInt(eHour.split(":")[0]); h++){
     if(isHourReserved(sDate, h+":00")){
