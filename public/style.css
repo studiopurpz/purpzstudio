@@ -469,6 +469,12 @@ nav a:hover {
   box-shadow:0 0 15px #ff00ff,0 0 10px #6e00ff;
 }
 
+.disabled-day {
+  color: #666;
+  cursor: not-allowed;
+  background: #1a1a1a;
+}
+
 /*cancel succes page */
 .message-container{
   background:#111;
