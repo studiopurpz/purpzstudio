@@ -10,11 +10,11 @@ const RES_FILE = path.join(__dirname, 'reservations.json')
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
 app.use(cors())
-app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
 console.log("Stripe key:", process.env.STRIPE_KEY ? "OK" : "BRAK");
 console.log("Webhook secret:", process.env.WEBHOOK_SECRET ? "OK" : "BRAK");
+
 // helper do odczytu rezerwacji
 function readReservations(){
   try {
@@ -34,13 +34,13 @@ function saveReservations(reservations){
 }
 
 // endpoint frontend pobiera wszystkie rezerwacje
-app.get('/api/reservations', (req,res)=>{
+app.get('/api/reservations', express.json(), (req,res)=>{
   const reservations = readReservations()
   res.json(reservations)
 })
 
 // endpoint do tworzenia checkout session (tylko Stripe)
-app.post('/create-checkout-session', async (req, res) => {
+app.post('/create-checkout-session', express.json(), async (req, res) => {
   const { startDate, startHour, endDate, endHour, totalPrice } = req.body
   if(!startDate || !startHour || !endDate || !endHour || !totalPrice){
     return res.status(400).json({ error: 'Brak danych rezerwacji' })
@@ -72,7 +72,7 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 })
 
-// webhook Stripe
+// 🔹 Webhook Stripe — tylko surowe body
 app.post('/webhook', bodyParser.raw({type:'application/json'}), (req, res) => {
   const sig = req.headers['stripe-signature']
   let event
