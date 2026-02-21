@@ -40,6 +40,19 @@ function getDayStatus(dateStr){
   return "partial"
 }
 
+// sprawdza czy godzina jest zajęta
+function isHourReserved(dateStr, hour){
+  const dayReservations = reservations[dateStr]
+  if(!dayReservations) return false
+  for(const r of dayReservations){
+    const startH = parseInt(r.start.split(":")[0])
+    const endH = parseInt(r.end.split(":")[0])
+    const hInt = parseInt(hour.split(":")[0])
+    if(hInt >= startH && hInt < endH) return true
+  }
+  return false
+}
+
 // render kalendarza
 async function renderCalendar(){
   calendar.innerHTML=""
@@ -73,7 +86,7 @@ async function renderCalendar(){
     const now = new Date()
     const diffHours = (date.getTime() - now.getTime()) / (1000*60*60)
     if(diffHours < 48){
-      div.classList.add("disabled-day") // nowa klasa CSS dla niedostępnych dni
+      div.classList.add("disabled-day")
       div.title = "Rezerwacja możliwa min. 48h wcześniej"
     } else {
       const status=getDayStatus(dateStr)
@@ -105,19 +118,24 @@ function showDayInfo(dateStr){
     })
   }
   panel.classList.remove("hidden")
+
+  // blokujemy godziny zajęte w selectach
+  fillHourSelects(dateStr)
 }
 
 // wypełnienie selectów godzin
-function fillHourSelects(){
+function fillHourSelects(selectedDate){
   startHourSelect.innerHTML=""
   endHourSelect.innerHTML=""
   hours.forEach(h=>{
     const opt1=document.createElement("option")
     opt1.value=h; opt1.innerText=h
+    if(selectedDate && isHourReserved(selectedDate, h)) opt1.disabled = true
     startHourSelect.appendChild(opt1)
 
     const opt2=document.createElement("option")
     opt2.value=h; opt2.innerText=h
+    if(selectedDate && isHourReserved(selectedDate, h)) opt2.disabled = true
     endHourSelect.appendChild(opt2)
   })
 }
@@ -151,7 +169,7 @@ function calculatePrice(){
 
   // obsługa kodu promocyjnego
   const code = promoCodeInput.value.trim()
-  if(code === "PURPZ15") discount = 15 // 10% zniżki
+  if(code === "PURPZ15") discount = 15
   else discount = 0
 
   total = Math.round(total * (1 - discount/100))
@@ -160,8 +178,9 @@ function calculatePrice(){
 
 // eventy reservation panel
 [startDateInput,endDateInput,startHourSelect,endHourSelect].forEach(el=>el.addEventListener("change",calculatePrice))
-promoCodeInput.addEventListener("input", calculatePrice) // aktualizacja ceny przy kodzie
+promoCodeInput.addEventListener("input", calculatePrice)
 
+// kliknięcie rezerwuj
 reserveBtn.onclick = async () => {
   const sDate = startDateInput.value
   const eDate = endDateInput.value
@@ -177,12 +196,21 @@ reserveBtn.onclick = async () => {
   let start = new Date(sDate+"T"+sHour)
   let end = new Date(eDate+"T"+eHour)
 
-  // Sprawdzenie 48h
+  // 48h blokada
   const now = new Date()
   const diffHours = (start.getTime() - now.getTime()) / (1000*60*60)
   if(diffHours < 48){
-    alert("Nie można zrobić rezerwacji na mniej niż 48 godzin przed rozpoczęciem")
+    alert("Nie można rezerwować na mniej niż 48 godzin przed rozpoczęciem")
     return
+  }
+
+  // sprawdzenie czy godziny nie są zajęte
+  const startHourInt = parseInt(sHour.split(":")[0])
+  for(let h=startHourInt; h<parseInt(eHour.split(":")[0]); h++){
+    if(isHourReserved(sDate, h+":00")){
+      alert("Wybrane godziny są już zajęte")
+      return
+    }
   }
 
   if(end<=start) {alert("Minimalna rezerwacja to 1 godzina"); return}
@@ -196,7 +224,7 @@ reserveBtn.onclick = async () => {
         startHour:sHour,
         endDate:eDate,
         endHour:eHour,
-        totalPrice: totalPrice*100 // w groszach
+        totalPrice: totalPrice*100
       })
     })
     const data = await res.json()
