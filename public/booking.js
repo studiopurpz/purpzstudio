@@ -124,7 +124,7 @@ function showDayInfo(dateStr){
 }
 
 // wypełnienie selectów godzin
-function fillHourSelects(selectedDate){
+function fillHourSelects(selectedDate = startDateInput.value){
   startHourSelect.innerHTML=""
   endHourSelect.innerHTML=""
   hours.forEach(h=>{
@@ -179,6 +179,11 @@ function calculatePrice(){
 // eventy reservation panel
 [startDateInput,endDateInput,startHourSelect,endHourSelect].forEach(el=>el.addEventListener("change",calculatePrice))
 promoCodeInput.addEventListener("input", calculatePrice)
+
+// aktualizacja godzin przy zmianie daty
+[startDateInput,endDateInput].forEach(el => 
+  el.addEventListener("change", () => fillHourSelects(startDateInput.value))
+)
 
 // kliknięcie rezerwuj
 reserveBtn.onclick = async () => {
