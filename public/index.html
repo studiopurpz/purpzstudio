@@ -10,6 +10,18 @@
 
 <link rel="stylesheet" href="style.css">
 
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  /* Dodatkowy styl dla mapy */
+  #map {
+    height: 400px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+</style>
+
 </head>
 <body>
 
@@ -46,7 +58,6 @@
   </div>
 </section>
 
-
 <section class="pricing" id="pricing">
   <div class="pricing-container">
     <h2 class="section-title">Cennik</h2>
@@ -72,7 +83,29 @@
 
 <div class="divider"></div>
 
+<!-- Sekcja Lokalizacja -->
+<section id="lokalizacja" style="padding:50px 0; text-align:center; background-color:#0a0a0f; color:white;">
+  <h2>Lokalizacja Studia</h2>
+  <div id="map"></div>
+</section>
 
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  h2 {
+    margin-bottom: 25px;
+  }
+  #map {
+    width: 60%;       /* mapa na całą szerokość */
+    height: 500px;     /* wysokość jak wcześniej */
+    max-width: none;   /* usuwa ograniczenie max-width */
+    margin: 0 auto;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+</style>
+
+<!-- Sekcja Socials -->
 <section id="socials">
   <div class="social-box">
     <h3>Obserwuj Nas</h3>
@@ -88,6 +121,26 @@
 <footer>
   © 2026 PURPZ Studio
 </footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const lat = 51.141139; // Twoja szerokość
+  const lng = 17.060556; // Twoja długość
+
+  // Inicjalizacja mapy
+  const map = L.map('map').setView([lat, lng], 15);
+
+  // Warstwa mapy OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+  }).addTo(map);
+
+  // Pinezka
+  L.marker([lat, lng]).addTo(map)
+    .bindPopup('PURPZ Studio')
+    .openPopup();
+</script>
 
 </body>
 </html>

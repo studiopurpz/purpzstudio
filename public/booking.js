@@ -43,7 +43,7 @@ function getDayStatus(dateStr){
 // render kalendarza
 async function renderCalendar(){
   calendar.innerHTML=""
-  
+
   try{
     const res = await fetch('/api/reservations')
     reservations = await res.json()
@@ -69,12 +69,20 @@ async function renderCalendar(){
     div.className="day"
     div.innerText=day
 
-    const status=getDayStatus(dateStr)
-    if(status==="free") div.classList.add("fully-free")
-    if(status==="partial") div.classList.add("partially-booked")
-    if(status==="full") div.classList.add("fully-booked")
+    // Sprawdzenie 48h
+    const now = new Date()
+    const diffHours = (date.getTime() - now.getTime()) / (1000*60*60)
+    if(diffHours < 48){
+      div.classList.add("disabled-day") // nowa klasa CSS dla niedostępnych dni
+      div.title = "Rezerwacja możliwa min. 48h wcześniej"
+    } else {
+      const status=getDayStatus(dateStr)
+      if(status==="free") div.classList.add("fully-free")
+      if(status==="partial") div.classList.add("partially-booked")
+      if(status==="full") div.classList.add("fully-booked")
+      div.onclick=()=>showDayInfo(dateStr)
+    }
 
-    div.onclick=()=>showDayInfo(dateStr)
     calendar.appendChild(div)
   }
 }
@@ -168,6 +176,15 @@ reserveBtn.onclick = async () => {
 
   let start = new Date(sDate+"T"+sHour)
   let end = new Date(eDate+"T"+eHour)
+
+  // Sprawdzenie 48h
+  const now = new Date()
+  const diffHours = (start.getTime() - now.getTime()) / (1000*60*60)
+  if(diffHours < 48){
+    alert("Nie można zrobić rezerwacji na mniej niż 48 godzin przed rozpoczęciem")
+    return
+  }
+
   if(end<=start) {alert("Minimalna rezerwacja to 1 godzina"); return}
 
   try {
