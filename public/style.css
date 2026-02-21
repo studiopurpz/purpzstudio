@@ -44,6 +44,13 @@ section {
   color: #c300ff;
 }
 
+.logo a {
+  color: inherit;       /* zachowuje kolor logo */
+  text-decoration: none; /* usuwa podkreślenie linku */
+  font-weight: inherit;  /* zachowuje font */
+  font-size: inherit;    /* zachowuje rozmiar czcionki */
+}
+
 nav a {
   margin-left: 25px;
   text-decoration: none;
