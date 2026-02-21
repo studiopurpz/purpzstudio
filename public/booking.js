@@ -10,9 +10,11 @@ const startHourSelect = document.getElementById("startHour")
 const endHourSelect = document.getElementById("endHour")
 const priceDisplay = document.getElementById("price")
 const reserveBtn = document.getElementById("reserveBtn")
+const promoCodeInput = document.getElementById("promoCode") // nowe pole
 
 let currentDate = new Date()
 let reservations = {} // tu wczytamy z backendu
+let discount = 0 // procentowa zniżka
 
 // godziny 0-23
 const hours=[]
@@ -138,11 +140,19 @@ function calculatePrice(){
     total+=rate
     current=new Date(current.getTime()+60*60*1000)
   }
-  priceDisplay.innerText=total
+
+  // obsługa kodu promocyjnego
+  const code = promoCodeInput.value.trim()
+  if(code === "PURPZ15") discount = 15 // 10% zniżki
+  else discount = 0
+
+  total = Math.round(total * (1 - discount/100))
+  priceDisplay.innerText = total
 }
 
 // eventy reservation panel
 [startDateInput,endDateInput,startHourSelect,endHourSelect].forEach(el=>el.addEventListener("change",calculatePrice))
+promoCodeInput.addEventListener("input", calculatePrice) // aktualizacja ceny przy kodzie
 
 reserveBtn.onclick = async () => {
   const sDate = startDateInput.value
