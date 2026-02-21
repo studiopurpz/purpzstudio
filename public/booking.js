@@ -87,12 +87,18 @@ function showDayInfo(dateStr){
     list.innerHTML='<div class="free-text">W tym dniu wszystkie godziny są wolne</div>'
   } else {
     list.innerHTML="<b>Zarezerwowane godziny:</b><br><br>"
-    dayReservations.forEach(r=>{
-      const div=document.createElement("div")
-      div.className="reserved-block"
-      div.innerText=`${r.start} – ${r.end}`
-      list.appendChild(div)
-    })
+    dayReservations.forEach(h=>{
+  const div = document.createElement("div")
+  div.className = "reserved-block"
+
+  // obliczamy godzinę końcową jako +1h
+  const startHour = h
+  const [hourStr, minute] = h.split(":")
+  const endHour = (parseInt(hourStr)+1).toString().padStart(2,'0') + ":" + minute
+
+  div.innerText = `${startHour} – ${endHour}`
+  list.appendChild(div)
+})
   }
   panel.classList.remove("hidden")
 }
