@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<title>PURPZ Studio</title>
+<link rel="icon" type="image/png" href="logo_64x64_full.png">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">PURPZ STUDIO</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="index.html">Studio</a>
+    <a href="index.html">Cennik</a>
+    <a href="index.html">Kontakt</a>
+    <a href="booking.html" class="book-btn">BOOK NOW</a>
+  </nav>
+</header>
+
+<div class="booking-container">
+
+  <!-- 1. Kalendarz -->
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button id="prevMonth">←</button>
+      <h3 id="monthYear"></h3>
+      <button id="nextMonth">→</button>
+    </div>
+
+    <div class="weekdays">
+      <div>Pn</div><div>Wt</div><div>Śr</div><div>Cz</div><div>Pt</div><div>Sb</div><div>Nd</div>
+    </div>
+
+    <div id="calendar"></div>
+  </div>
+
+  <!-- 2. Panel podglądu zajętych godzin -->
+  <div id="dayInfoPanel" class="day-info-panel hidden">
+    <h3 id="selectedDateTitle">Data</h3>
+    <div id="reservedHoursList"></div>
+  </div>
+
+  <!-- 3. Panel własnej rezerwacji -->
+  <div class="reservation-panel">
+    <h3>Zrób Swoją Rezerwację</h3>
+
+    <label for="startDate">Data Rozpoczęcia:</label>
+    <input type="date" id="startDate">
+
+    <label for="startHour">Godzina Rozpoczęcia:</label>
+    <select id="startHour"></select>
+
+    <label for="endDate">Data Zakończenia:</label>
+    <input type="date" id="endDate">
+
+    <label for="endHour">Godzina Zakończenia:</label>
+    <select id="endHour"></select>
+
+    <h2>Cena: <span id="price">0</span> zł</h2>
+
+    <button id="reserveBtn">Zarezerwuj i Zapłać</button>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+<section id="socials">
+  <div class="social-box">
+    <h3>Obserwuj Nas</h3>
+    <div class="social-icons">
+      <a href="https://www.tiktok.com/@axonbonus" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.instagram.com/axoncasino/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://kick.com/twojnick" target="_blank"><i class="fa-brands fa-kickstarter"></i></a>
+      <a href="https://www.youtube.com/@AXONBonuses" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 PURPZ Studio
+</footer>
+
+<script src="booking.js"></script>
+</body>
+</html>
