@@ -111,3 +111,28 @@ app.post('/webhook', bodyParser.raw({type:'application/json'}), (req, res) => {
 // 🔹 Tutaj zmiana dla Render
 const PORT = process.env.PORT || 4242
 app.listen(PORT, ()=>console.log(`Server running on port ${PORT}`))
+
+// 🔹 Endpoint do przeglądania wszystkich rezerwacji
+app.get('/admin/reservations', (req, res) => {
+  const reservations = readReservations()
+  res.json(reservations)
+})
+
+// 🔹 Endpoint do usuwania rezerwacji
+// Przykład wywołania: POST /admin/delete-reservation z body:
+// { "date": "2026-02-21", "hour": "14:00" }
+app.post('/admin/delete-reservation', express.json(), (req, res) => {
+  const { date, hour } = req.body
+  if(!date || !hour) return res.status(400).json({ error: "Brak daty lub godziny" })
+
+  const reservations = readReservations()
+  if(reservations[date]){
+    reservations[date] = reservations[date].filter(h => h !== hour)
+    // jeśli już nie ma żadnych godzin, usuń cały dzień
+    if(reservations[date].length === 0) delete reservations[date]
+    saveReservations(reservations)
+    return res.json({ success: true, message: `Usunięto rezerwację ${date} ${hour}` })
+  } else {
+    return res.status(404).json({ error: "Nie znaleziono rezerwacji w tym dniu" })
+  }
+})
