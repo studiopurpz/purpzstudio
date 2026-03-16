@@ -250,3 +250,33 @@ document.getElementById("nextMonth").onclick=()=>{
 
 fillHourSelects()
 renderCalendar()
+
+
+document.querySelectorAll(".buy-package-btn").forEach(btn => {
+
+  btn.addEventListener("click", async () => {
+
+    const name = btn.dataset.name
+    const price = parseInt(btn.dataset.price)
+
+    try {
+      const res = await fetch('https://purpzstudio.pl/create-package-checkout', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          name: name,
+          price: price * 100 // grosze
+        })
+      })
+
+      const data = await res.json()
+      window.location.href = data.url
+
+    } catch(err){
+      console.error(err)
+      alert("Błąd przy płatności")
+    }
+
+  })
+
+})

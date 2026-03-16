@@ -482,6 +482,22 @@ nav a:hover {
   background: #1a1a1a;
 }
 
+.pricing-card button{
+  margin-top:40px;
+  padding:15px;
+  background:linear-gradient(90deg,#6e00ff,#ff00ff);
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-size: 15px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+.pricing-card button:hover{
+  box-shadow:0 0 15px #ff00ff,0 0 10px #6e00ff;
+}
+
 /*cancel succes page */
 .message-container{
   background:#111;
