@@ -3,12 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <title>PURPZ Studio</title>
 <link rel="icon" type="image/png" href="logo_64x64_full.png">
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+.hidden{
+display:none;
+}
+
+.service-tabs{
+display:flex;
+justify-content:center;
+gap:15px;
+margin:40px 0;
+flex-wrap:wrap;
+}
+
+.service-tabs button{
+margin-top: 50px;
+padding:12px 25px;
+background:#6a00ff;
+border:none;
+border-radius:8px;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.service-tabs button:hover{
+background:#5300c7;
+}
+
+.tab-content{
+margin:auto;
+}
+
+.form-box{
+max-width:500px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.form-box input,
+.form-box select,
+.form-box textarea{
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.form-box button{
+padding:12px;
+background:#6a00ff;
+border:none;
+color:white;
+cursor:pointer;
+border-radius:6px;
+}
+
+.package{
+border:1px solid #ccc;
+padding:20px;
+border-radius:10px;
+margin:10px;
+}
+
+</style>
 
 </head>
 <body>
@@ -17,19 +86,35 @@
   <div class="logo">
     <a href="index.html">PURPZ STUDIO</a>
   </div>
+
   <nav>
     <a href="#home">Home</a>
     <a href="#studio">Studio</a>
     <a href="#pricing">Cennik</a>
     <a href="#socials">Kontakt</a>
-    <a href="booking.html" class="book-btn">BOOK NOW</a>
   </nav>
 </header>
 
-<div class="booking-container">
 
-  <!-- 1. Kalendarz -->
+<!-- PRZYCISKI -->
+<div class="service-tabs">
+
+<button onclick="showTab('vocals')">Realizacja wokali</button>
+<button onclick="showTab('mix')">Mix / Mastering</button>
+<button onclick="showTab('packages')">Pakiety</button>
+<button onclick="showTab('room')">Sala</button>
+
+</div>
+
+
+<!-- REALIZACJA WOKALI -->
+<div id="vocals" class="tab-content">
+
+<div class="booking-container">
+  
+
   <div class="calendar-container">
+
     <div class="calendar-header">
       <button id="prevMonth">←</button>
       <h3 id="monthYear"></h3>
@@ -37,62 +122,245 @@
     </div>
 
     <div class="weekdays">
-      <div>Pn</div><div>Wt</div><div>Śr</div><div>Cz</div><div>Pt</div><div>Sb</div><div>Nd</div>
+      <div>Pn</div>
+      <div>Wt</div>
+      <div>Śr</div>
+      <div>Cz</div>
+      <div>Pt</div>
+      <div>Sb</div>
+      <div>Nd</div>
     </div>
 
     <div id="calendar"></div>
+
   </div>
 
-  <!-- 2. Panel podglądu zajętych godzin -->
+
   <div id="dayInfoPanel" class="day-info-panel hidden">
     <h3 id="selectedDateTitle">Data</h3>
     <div id="reservedHoursList"></div>
   </div>
 
-  <!-- 3. Panel własnej rezerwacji -->
+
   <div class="reservation-panel">
+
     <h3>Zrób Swoją Rezerwację</h3>
 
-    <label for="startDate">Data Rozpoczęcia:</label>
+    <label>Data Rozpoczęcia</label>
     <input type="date" id="startDate">
 
-    <label for="startHour">Godzina Rozpoczęcia:</label>
+    <label>Godzina Rozpoczęcia</label>
     <select id="startHour"></select>
 
-    <label for="endDate">Data Zakończenia:</label>
+    <label>Data Zakończenia</label>
     <input type="date" id="endDate">
 
-    <label for="endHour">Godzina Zakończenia:</label>
+    <label>Godzina Zakończenia</label>
     <select id="endHour"></select>
 
     <h2>Cena: <span id="price">0</span> zł</h2>
 
-    <label for="promoCode">Kod promocyjny:</label>
-    <input type="text" id="promoCode" placeholder="Wpisz kod, jeśli masz">
+    <label>Kod promocyjny</label>
+    <input type="text" id="promoCode">
 
     <button id="reserveBtn">Zarezerwuj i Zapłać</button>
+
   </div>
 
 </div>
 
+</div>
+
+
+<!-- MIX MASTERING -->
+<div id="mix" class="tab-content hidden">
+
+<div class="mix-container">
+
+<h2>Zamów Mix & Mastering</h2>
+
+<div class="mix-form">
+
+<label>Adres e-mail (Przez ten mail będziemy się kontaktować)</label>
+<input type="email" id="mixEmail">
+
+<label>Link do plików (Google Drive / Dropbox)</label>
+<input type="text" id="mixDrive">
+
+<label>Ilość ścieżek</label>
+<select id="trackCount">
+
+<option value="180">Do 10 ścieżek</option>
+<option value="220">11 - 20 ścieżek</option>
+<option value="280">21 - 30 ścieżek</option>
+<option value="320">31 - 40 ścieżek</option>
+<option value="360">41 - 50 ścieżek</option>
+<option value="400">51 - 60 ścieżek</option>
+<option value="450">61 - 70 ścieżek</option>
+<option value="0">Sam Mastering</option>
+
+</select>
+
+<label>Typ usługi</label>
+<select id="serviceType">
+
+<option value="0">Mix + Mastering</option>
+<option value="120">Sam Mastering</option>
+
+</select>
+
+<label>Utwór referencyjny (link)</label>
+<input type="text" id="referenceTrack">
+
+<label>Opis projektu</label>
+<textarea rows="5" id="projectDescription"></textarea>
+
+<label class="express-label">
+  <input type="checkbox" id="expressService">
+  Express realizacja (24h) +150 zł
+</label>
+
+<label>Kod promocyjny</label>
+<input type="text" id="mixPromo">
+
+<div class="mix-total">
+Łącznie:
+<span id="mixPrice">300</span> zł
+</div>
+
+<button id="mixCheckoutBtn">
+Zamów Mix & Mastering
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PAKIETY -->
+<div id="packages" class="tab-content hidden">
+
+<section class="pricing" id="pricing">
+  <div class="pricing-container">
+    <h2 class="section-title">Pakiety</h2>
+    <h2 class="section-info">Pamiętaj aby podać adres email do kontaktu w okienku płatności</h2>
+    <div class="pricing-grid">
+      <!-- Realizacja wokalu -->
+      <div class="pricing-card">
+        <h3>BASIC</h3>
+        <div class="price-item"><span>W pakiecie:</span><span></span></div>
+        <div class="price-item"><span>Godzin w studiu:</span><span>4h / msc</span></div>
+        <div class="price-item"><span>Mix & Mastering:</span><span>1</span></div>
+        <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
+        <div class="price-item"><span>Cena:</span><span>399 zł</span></div>
+        <button class="buy-package-btn" data-name="BASIC" data-price="399">
+        Kup pakiet
+  </button>
+      </div>
+      <!-- Mix / Master -->
+      <div class="pricing-card">
+        <h3>Artysta</h3>
+        <div class="price-item"><span>W pakiecie:</span><span></span></div>
+        <div class="price-item"><span>Godzin w studiu:</span><span>8h / msc</span></div>
+        <div class="price-item"><span>Mix & Mastering:</span><span>2</span></div>
+        <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
+        <div class="price-item"><span>Cena:</span><span>599 zł</span></div>
+        <button class="buy-package-btn" data-name="STANDARD" data-price="599">
+        Kup pakiet
+  </button>
+      </div>
+            <div class="pricing-card">
+        <h3>PRO</h3>
+        <div class="price-item"><span>W pakiecie:</span><span></span></div>
+        <div class="price-item"><span>Godzin w studiu:</span><span>16h / msc</span></div>
+        <div class="price-item"><span>Mix & Mastering:</span><span>3</span></div>
+        <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
+        <div class="price-item"><span>Cena:</span><span>999 zł</span></div>
+        <button class="buy-package-btn" data-name="PREMIUM" data-price="999">
+        Kup pakiet
+  </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</div>
+
+</div>
+
+
+<!-- SALA -->
+<div id="room" class="tab-content hidden">
+
+<h2 style="text-align:center">Wynajem sali</h2>
+
+<div class="form-box">
+
+<p>Możesz wynająć studio na:</p>
+
+<ul>
+<li>nagrania</li>
+<li>eventy</li>
+<li>próby</li>
+</ul>
+
+<label>Data</label>
+<input type="date">
+
+<label>Godziny</label>
+<input type="text" placeholder="np. 18:00 - 22:00">
+
+<button>Zarezerwuj salę</button>
+
+</div>
+
+</div>
+
+
 <div class="divider"></div>
+
 
 <section id="socials">
   <div class="social-box">
+
     <h3>Obserwuj Nas</h3>
+
     <div class="social-icons">
       <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-tiktok"></i></a>
       <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-instagram"></i></a>
       <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fa-brands fa-kickstarter"></i></a>
       <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-youtube"></i></a>
     </div>
+
   </div>
 </section>
 
+
 <footer>
-  © 2026 PURPZ Studio
+© 2026 PURPZ Studio
 </footer>
 
+
 <script src="booking.js"></script>
+
+<script>
+
+function showTab(tab){
+
+const tabs = document.querySelectorAll(".tab-content")
+
+tabs.forEach(t=>{
+t.classList.add("hidden")
+})
+
+document.getElementById(tab).classList.remove("hidden")
+
+}
+
+</script>
+
 </body>
 </html>
