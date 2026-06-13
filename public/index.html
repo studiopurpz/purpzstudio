@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -427,4 +428,190 @@
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<title>PURPZ Studio</title>
+<link rel="icon" type="image/png" href="logo_64x64_full.png">
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  /* Dodatkowy styl dla mapy */
+  #map {
+    height: 400px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+</style>
+
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <a href="index.html">PURPZ STUDIO</a>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#studio">Studio</a>
+    <a href="#pricing">Cennik</a>
+    <a href="#socials">Kontakt</a>
+    <a href="booking.html" class="book-btn">BOOK NOW</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1>Profesjonalne Studio Nagrań</h1>
+    <p>Nagrywaj. Twórz. Streamuj. Zarezerwuj sesję w kilka sekund.</p>
+    <a href="booking.html" class="main-book-btn">Zarezerwuj</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="features" id="studio">
+  <div class="feature"><h2>Premium Sound</h2></div>
+  <div class="feature"><h2>Realizator na miejscu</h2></div>
+  <div class="feature"><h2>Rezerwacja Online</h2></div>
+</section>
+
+<section class="promo-bar">
+  <div class="promo-content">
+    -15% Z KODEM "<span>PURPZ15</span>"
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-container">
+    <h2 class="section-title">Cennik</h2>
+    <div class="pricing-grid">
+      <!-- Realizacja wokalu -->
+      <div class="pricing-card">
+        <h3>Realizacja wokalu</h3>
+        <div class="price-item"><span>Dzień powszedni</span><span>80 zł / h</span></div>
+        <div class="price-item"><span>Dzień powszedni (Noc)</span><span>100 zł / h</span></div>
+        <div class="price-item"><span>Weekend</span><span>100 zł / h</span></div>
+        <div class="price-item"><span>Weekend (Noc)</span><span>120 zł / h</span></div>
+      </div>
+      <!-- Mix / Master -->
+      <div class="pricing-card">
+        <h3>Mix / Master</h3>
+        <div class="price-item"><span>Do 10 ścieżek</span><span>140 zł</span></div>
+        <div class="price-item"><span>11-20 ścieżek</span><span>180 zł</span></div>
+        <div class="price-item"><span>21+ ścieżek</span><span>+230 zł</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-container">
+    <h2 class="section-title">Pakiety</h2>
+    <div class="pricing-grid">
+      <!-- Realizacja wokalu -->
+      <div class="pricing-card">
+        <h3>BASIC</h3>
+        <div class="price-item"><span>W pakiecie:</span><span></span></div>
+        <div class="price-item"><span>Godzin w studiu:</span><span>4h / msc</span></div>
+        <div class="price-item"><span>Mix & Mastering:</span><span>1</span></div>
+        <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
+        <div class="price-item"><span>Cena:</span><span>399 zł</span></div>
+      </div>
+      <!-- Mix / Master -->
+      <div class="pricing-card">
+        <h3>Artysta</h3>
+        <div class="price-item"><span>W pakiecie:</span><span></span></div>
+        <div class="price-item"><span>Godzin w studiu:</span><span>8h / msc</span></div>
+        <div class="price-item"><span>Mix & Mastering:</span><span>2</span></div>
+        <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
+        <div class="price-item"><span>Cena:</span><span>599 zł</span></div>
+      </div>
+            <div class="pricing-card">
+        <h3>PRO</h3>
+        <div class="price-item"><span>W pakiecie:</span><span></span></div>
+        <div class="price-item"><span>Godzin w studiu:</span><span>16h / msc</span></div>
+        <div class="price-item"><span>Mix & Mastering:</span><span>3</span></div>
+        <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
+        <div class="price-item"><span>Cena:</span><span>999 zł</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="divider"></div>
+
+<!-- Sekcja Lokalizacja -->
+<section id="lokalizacja" style="padding:50px 0; text-align:center; background-color:#0a0a0f; color:white;">
+  <h2>Lokalizacja Studia</h2>
+  <div id="map"></div>
+</section>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  h2 {
+    margin-bottom: 25px;
+  }
+  #map {
+    width: 60%;       /* mapa na całą szerokość */
+    height: 500px;     /* wysokość jak wcześniej */
+    max-width: none;   /* usuwa ograniczenie max-width */
+    margin: 0 auto;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+</style>
+
+<!-- Sekcja Socials -->
+<section id="socials">
+  <div class="social-box">
+    <h3>Obserwuj Nas</h3>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fa-brands fa-kickstarter"></i></a>
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 PURPZ Studio
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const lat = 51.137061; // Twoja szerokość
+  const lng = 17.070525; // Twoja długość
+
+  // Inicjalizacja mapy
+  const map = L.map('map').setView([lat, lng], 15);
+
+  // Warstwa mapy OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+  }).addTo(map);
+
+  // Pinezka
+  L.marker([lat, lng]).addTo(map)
+    .bindPopup('PURPZ Studio')
+    .openPopup();
+</script>
+
+</body>
+>>>>>>> 0b7e279224215e0b8808befcb7ab7c6b9c2355fe
 </html>
