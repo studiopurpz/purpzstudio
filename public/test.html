@@ -111,6 +111,7 @@ margin:10px;
 <div id="vocals" class="tab-content">
 
 <div class="booking-container">
+  
 
   <div class="calendar-container">
 
@@ -174,24 +175,64 @@ margin:10px;
 <!-- MIX MASTERING -->
 <div id="mix" class="tab-content hidden">
 
-<h2 style="text-align:center">Zamów Mix / Mastering</h2>
+<div class="mix-container">
 
-<div class="form-box">
+<h2>Zamów Mix & Mastering</h2>
 
-<label>Link do plików (Drive / Dropbox)</label>
-<input type="text">
+<div class="mix-form">
 
-<label>Typ usługi</label>
-<select>
-<option>Mix</option>
-<option>Mastering</option>
-<option>Mix + Master</option>
+<label>Adres e-mail (Przez ten mail będziemy się kontaktować)</label>
+<input type="email" id="mixEmail">
+
+<label>Link do plików (Google Drive / Dropbox)</label>
+<input type="text" id="mixDrive">
+
+<label>Ilość ścieżek</label>
+<select id="trackCount">
+
+<option value="180">Do 10 ścieżek</option>
+<option value="220">11 - 20 ścieżek</option>
+<option value="280">21 - 30 ścieżek</option>
+<option value="320">31 - 40 ścieżek</option>
+<option value="360">41 - 50 ścieżek</option>
+<option value="400">51 - 60 ścieżek</option>
+<option value="450">61 - 70 ścieżek</option>
+<option value="0">Sam Mastering</option>
+
 </select>
 
-<label>Opis projektu</label>
-<textarea rows="4"></textarea>
+<label>Typ usługi</label>
+<select id="serviceType">
 
-<button>Wyślij zamówienie</button>
+<option value="0">Mix + Mastering</option>
+<option value="120">Sam Mastering</option>
+
+</select>
+
+<label>Utwór referencyjny (link)</label>
+<input type="text" id="referenceTrack">
+
+<label>Opis projektu</label>
+<textarea rows="5" id="projectDescription"></textarea>
+
+<label class="express-label">
+  <input type="checkbox" id="expressService">
+  Express realizacja (24h) +150 zł
+</label>
+
+<label>Kod promocyjny</label>
+<input type="text" id="mixPromo">
+
+<div class="mix-total">
+Łącznie:
+<span id="mixPrice">300</span> zł
+</div>
+
+<button id="mixCheckoutBtn">
+Zamów Mix & Mastering
+</button>
+
+</div>
 
 </div>
 
@@ -204,6 +245,7 @@ margin:10px;
 <section class="pricing" id="pricing">
   <div class="pricing-container">
     <h2 class="section-title">Pakiety</h2>
+    <h2 class="section-info">Pamiętaj aby podać adres email do kontaktu w okienku płatności</h2>
     <div class="pricing-grid">
       <!-- Realizacja wokalu -->
       <div class="pricing-card">

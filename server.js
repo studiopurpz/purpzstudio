@@ -106,6 +106,65 @@ app.post('/create-package-checkout', async (req, res) => {
 
 })
 
+app.post('/create-mix-checkout', express.json(), async (req, res) => {
+
+const {
+  email,
+  drive,
+  tracks,
+  service,
+  express,
+  reference,
+  description,
+  totalPrice
+} = req.body
+
+  try {
+
+    const session = await stripe.checkout.sessions.create({
+
+      payment_method_types: ['card', 'blik'],
+
+      mode: 'payment',
+
+      line_items: [{
+        price_data: {
+          currency: 'pln',
+          product_data: {
+            name: `${service} (${tracks})`
+          },
+          unit_amount: totalPrice
+        },
+        quantity: 1
+      }],
+
+      success_url: 'https://purpzstudio.pl/success.html',
+      cancel_url: 'https://purpzstudio.pl/cancel.html',
+
+      metadata: {
+  email,
+  drive,
+  tracks,
+  service,
+  express,
+  reference,
+  description
+}
+
+    })
+
+    res.json({ url: session.url })
+
+  } catch (err) {
+
+    console.error(err)
+    res.status(500).json({ error: err.message })
+
+  }
+
+})
+
+
 // 🔹 Webhook Stripe — tylko surowe body
 app.post('/webhook', bodyParser.raw({type:'application/json'}), (req, res) => {
   const sig = req.headers['stripe-signature']
