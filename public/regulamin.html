@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<title>PURPZ Studio</title>
+<link rel="icon" type="image/png" href="logo_64x64_full.png">
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  /* Dodatkowy styl dla mapy */
+  #map {
+    height: 400px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+</style>
+
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <a href="index.html">PURPZ STUDIO</a>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#studio">Studio</a>
+    <a href="#pricing">Cennik</a>
+    <a href="#socials">Kontakt</a>
+    <a href="booking.html" class="book-btn">BOOK NOW</a>
+  </nav>
+</header>
+
+
+<section class="terms-page">
+  <div class="terms-container">
+
+    <h1>Regulamin / Zasady uźytkowania</h1>
+    <p class="last-update">Ostatnia aktualizacja: 10.04.2026</p>
+
+    <div class="terms-content">
+
+      <h2>1. Postanowienia ogólne</h2>
+      <p>
+        • Niniejszy regulamin określa zasady korzystania ze Studia Nagrań PURPZ Studio, zwanego dalej „Studiem”.
+      </p>
+      <p>
+        • Każda osoba korzystająca ze Studia zobowiązana jest do zapoznania się z regulaminem oraz jego przestrzegania
+      </p>
+      <p>
+        • Rezerwacja terminu lub rozpoczęcie korzystania ze Studia oznacza akceptację niniejszego regulaminu.
+      </p>
+
+      <h2>2. Rezerwacje i płatności</h2>
+      <p>
+        • Rezerwacji terminu można dokonać poprzez strone internetową, kontakt telefoniczny, e-mail lub wiadomość prywatną.
+      </p>
+      <p>
+        • Studio może wymagać wpłaty zadatku w celu potwierdzenia rezerwacji.
+      </p>
+      <p>
+        • W przypadku odwołania rezerwacji:
+            - do 48h przed terminem – zadatek może zostać zwrócony lub przeniesiony,
+            - poniżej 48h – zadatek przepada.
+      </p>
+      <p>
+        • Opłata za usługę naliczana jest zgodnie z aktualnym cennikiem.
+      </p>
+
+      <h2>3. Godziny pracy studia</h2>
+      <p>
+        • Studio działa w godzinach: 8:00 – 22:00 (poniedziałek – niedziela).
+      </p>
+      <p>
+        • Istnieje możliwość rezerwacji sesji poza standardowymi godzinami pracy po wcześniejszym uzgodnieniu.
+      </p>
+      <p>
+        • Sesje nocne (22:00 – 8:00) objęte są dodatkową opłatą.
+      </p>
+
+      <h2>4. Anulowanie rezerwacji</h2>
+      <p>
+        • Klient ma prawo do anulowania lub zmiany terminu rezerwacji.
+      </p>
+      <p>
+        • W przypadku anulowania:
+            - powyżej 48h przed terminem – brak opłat / możliwość zmiany terminu,
+            - 24–48h przed terminem – opłata 75% wartości rezerwacji,
+            - poniżej 24h przed terminem lub brak obecności – opłata 100% wartości rezerwacji.
+      </p>
+      <p>
+        • W przypadku spóźnienia klienta, czas sesji nie ulega wydłużeniu.
+      </p>
+      <p>
+        • Studio zastrzega sobie prawo do odwołania sesji z przyczyn niezależnych – w takim przypadku klient otrzymuje zwrot środków lub nowy termin.
+      </p>
+
+      <h2>5. Zasady korzystania ze studia</h2>
+      <p>
+        • Klient zobowiązany jest do punktualnego przybycia.
+      </p>
+      <p>
+        • Czas sesji liczony jest od ustalonej godziny, niezależnie od spóźnienia klienta.
+      </p>
+      <p>
+        • W studiu obowiązuje zakaz:
+            - spożywania środków odurzających,
+            - palenia tytoniu (dotyczy wyłącznie tradycyjnych wyrobów tytoniowych; dopuszcza się korzystanie z papierosów elektronicznych)
+            - niszczenia sprzętu oraz wyposażenia.
+      </p>
+      <p>
+        • Klient ponosi pełną odpowiedzialność za szkody wyrządzone w studiu.
+      </p>
+
+      <h2>6. Sprzęt i bezpieczeństwo</h2>
+      <p>
+        • Ze sprzętu studyjnego można korzystać wyłącznie za zgodą realizatora.
+      </p>
+      <p>
+        • Zabrania się samodzielnego podłączania i odłączania urządzeń bez konsultacji.
+      </p>
+      <p>
+        • Studio nie ponosi odpowiedzialności za utratę danych spowodowaną czynnikami niezależnymi (np. awarie sprzętu)
+      </p>
+      <p>
+        • Klient zobowiązany jest do wykonania kopii zapasowej nagrań po zakończeniu sesji. (dotyczy sesji bez obecności realizatora)
+      </p>
+
+
+      <h2>7. Materiały i prawa autorskie</h2>
+      <p>
+        • Wszystkie materiały nagrane w studiu pozostają własnością klienta po uregulowaniu płatności.
+      </p>
+      <p>
+        • Studio ma prawo wykorzystać fragmenty nagrań w celach promocyjnych (portfolio), chyba że klient zgłosi sprzeciw.
+      </p>
+      <p>
+        • Klient oświadcza, że posiada prawa do nagrywanych materiałów.4
+      </p>
+
+      <h2>8. Odpowiedzialność</h2>
+      <p>
+        • Studio nie odpowiada za rzeczy pozostawione na terenie obiektu.
+      </p>
+      <p>
+        • Studio zastrzega sobie prawo do przerwania sesji w przypadku naruszenia regulaminu.
+      </p>
+      <p>
+        • W przypadku nieodpowiedniego zachowania klienta, studio może odmówić dalszej współpracy.
+      </p>
+
+      <h2>9. Postanowienia końcowe</h2>
+      <p>
+        • Studio zastrzega sobie prawo do zmiany regulaminu.
+      </p>
+      <p>
+        • W sprawach nieuregulowanych regulaminem zastosowanie mają przepisy prawa polskiego.
+      </p>
+      <p>
+        • Regulamin wchodzi w życie z dniem publikacji na stronie internetowej.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<!-- Sekcja Socials -->
+<section id="socials">
+  <div class="social-box">
+    <h3>Obserwuj Nas</h3>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fa-brands fa-kickstarter"></i></a>
+      <a href="https://www.instagram.com/purpz_studio/" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+
+  <div class="footer-top">
+
+    <!-- LEWA -->
+    <div class="footer-brand">
+      <h2>PURPZ<br>STUDIO</h2>
+      <p>Bo dobry dźwięk<br>to nie przypadek.</p>
+    </div>
+
+    <!-- KOLUMNY -->
+    <div class="footer-columns">
+
+      <div class="footer-col">
+        <h4>Obsługa klienta</h4>
+        <p>Kontakt i pomoc</p>
+        <p>E-mail: studiopurpz@gmail.com</p>
+        <p>Telefon: +48 887 056 437</p>
+        <p>ul. Bolesława Krzywoustego 6/12, 51-165 Wrocław</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Usługi</h4>
+        <p>Wynajem studia</p>
+        <p>Mix & Mastering</p>
+        <p>Pakiety</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Przydatne linki</h4>
+        <p>Regulamin</p>
+        <p>Zasady uźytkowania</p>
+        <p>Zwroty i reklamacje</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Opinie</h4>
+        <p>Google</p>
+        <p>Facebook</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- DÓŁ -->
+  <div class="footer-bottom">
+    <p>© 2026 PURPZ Studio. Wszystkie prawa zastrzeżone</p>
+
+    <div class="footer-links">
+      <span>Polityka prywatności</span>
+      <span>Cookies</span>
+    </div>
+  </div>
+
+</footer>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const lat = 51.141139; // Twoja szerokość
+  const lng = 17.060556; // Twoja długość
+
+  // Inicjalizacja mapy
+  const map = L.map('map').setView([lat, lng], 15);
+
+  // Warstwa mapy OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+  }).addTo(map);
+
+  // Pinezka
+  L.marker([lat, lng]).addTo(map)
+    .bindPopup('PURPZ Studio')
+    .openPopup();
+</script>
+
+</body>
+</html>

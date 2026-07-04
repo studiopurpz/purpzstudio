@@ -280,3 +280,100 @@ document.querySelectorAll(".buy-package-btn").forEach(btn => {
   })
 
 })
+
+
+const trackCount = document.getElementById("trackCount")
+const serviceType = document.getElementById("serviceType")
+const mixPromo = document.getElementById("mixPromo")
+const mixPrice = document.getElementById("mixPrice")
+const expressService = document.getElementById("expressService")
+
+function calculateMixPrice(){
+
+let total =
+parseInt(trackCount.value) +
+parseInt(serviceType.value)
+
+// Express +150 zł
+if(expressService.checked){
+  total += 150
+}
+
+if(total < 0) total = 0
+
+if(mixPromo.value.trim() === "PURPZ15"){
+  total = Math.round(total * 0.85)
+}
+
+mixPrice.innerText = total
+
+}
+
+trackCount?.addEventListener("change", calculateMixPrice)
+serviceType?.addEventListener("change", calculateMixPrice)
+mixPromo?.addEventListener("input", calculateMixPrice)
+expressService?.addEventListener("change", calculateMixPrice)
+
+calculateMixPrice()
+
+document.getElementById("mixCheckoutBtn")
+.addEventListener("click", async () => {
+
+const total =
+parseInt(mixPrice.innerText)
+
+const email =
+document.getElementById("mixEmail").value
+
+const drive =
+document.getElementById("mixDrive").value
+
+if(!email || !drive){
+alert("Uzupełnij email i link do plików")
+return
+}
+
+const res = await fetch(
+'https://purpzstudio.pl/create-mix-checkout',
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body: JSON.stringify({
+
+  email,
+  drive,
+
+  tracks:
+  trackCount.options[
+  trackCount.selectedIndex
+  ].text,
+
+  service:
+  serviceType.options[
+  serviceType.selectedIndex
+  ].text,
+
+  express:
+  expressService.checked ? "TAK" : "NIE",
+
+  reference:
+  document.getElementById("referenceTrack").value,
+
+  description:
+  document.getElementById("projectDescription").value,
+
+  totalPrice:
+  total * 100
+
+})
+}
+)
+
+const data = await res.json()
+
+window.location.href = data.url
+
+})
+

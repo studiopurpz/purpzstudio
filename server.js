@@ -72,13 +72,20 @@ app.post('/create-checkout-session', express.json(), async (req, res) => {
   }
 })
 
-app.post('/create-package-checkout', async (req, res) => {
+app.post('/create-package-checkout', express.json(), async (req, res) => {
 
   const { name, price } = req.body
+
+  if(!name || !price){
+    return res.status(400).json({
+      error: 'Brak danych pakietu'
+    })
+  }
 
   try {
 
     const session = await stripe.checkout.sessions.create({
+
       payment_method_types: ['card', 'blik'],
       mode: 'payment',
 
@@ -93,18 +100,83 @@ app.post('/create-package-checkout', async (req, res) => {
         quantity: 1
       }],
 
-      success_url: 'https://purpzstudio.pl/success',
-      cancel_url: 'https://purpzstudio.pl/cancel'
+      success_url: 'https://purpzstudio.pl/success.html',
+      cancel_url: 'https://purpzstudio.pl/cancel.html'
+
     })
 
     res.json({ url: session.url })
 
   } catch (err) {
-    console.error(err)
-    res.status(500).send('Error')
+
+    console.error("PACKAGE ERROR:", err)
+
+    res.status(500).json({
+      error: err.message
+    })
+
   }
 
 })
+
+app.post('/create-mix-checkout', express.json(), async (req, res) => {
+
+const {
+  email,
+  drive,
+  tracks,
+  service,
+  express,
+  reference,
+  description,
+  totalPrice
+} = req.body
+
+  try {
+
+    const session = await stripe.checkout.sessions.create({
+
+      payment_method_types: ['card', 'blik'],
+
+      mode: 'payment',
+
+      line_items: [{
+        price_data: {
+          currency: 'pln',
+          product_data: {
+            name: `${service} (${tracks})`
+          },
+          unit_amount: totalPrice
+        },
+        quantity: 1
+      }],
+
+      success_url: 'https://purpzstudio.pl/success.html',
+      cancel_url: 'https://purpzstudio.pl/cancel.html',
+
+      metadata: {
+  email,
+  drive,
+  tracks,
+  service,
+  express,
+  reference,
+  description
+}
+
+    })
+
+    res.json({ url: session.url })
+
+  } catch (err) {
+
+    console.error(err)
+    res.status(500).json({ error: err.message })
+
+  }
+
+})
+
 
 // 🔹 Webhook Stripe — tylko surowe body
 app.post('/webhook', bodyParser.raw({type:'application/json'}), (req, res) => {
