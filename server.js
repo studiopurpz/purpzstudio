@@ -76,7 +76,7 @@ app.post('/create-package-checkout', express.json(), async (req, res) => {
 
   const { name, price } = req.body
 
-  if(!name || !price){
+  if (!name || !price) {
     return res.status(400).json({
       error: 'Brak danych pakietu'
     })
@@ -101,7 +101,14 @@ app.post('/create-package-checkout', express.json(), async (req, res) => {
       }],
 
       success_url: 'https://purpzstudio.pl/success.html',
-      cancel_url: 'https://purpzstudio.pl/cancel.html'
+      cancel_url: 'https://purpzstudio.pl/cancel.html',
+
+      // 🔥 DODANE (WAŻNE)
+      metadata: {
+        type: 'package',
+        name,
+        price
+      }
 
     })
 

@@ -102,7 +102,7 @@ margin:10px;
 <button onclick="showTab('vocals')">Realizacja wokali</button>
 <button onclick="showTab('mix')">Mix / Mastering</button>
 <button onclick="showTab('packages')">Pakiety</button>
-<button onclick="showTab('room')">Sala</button>
+<button onclick="showTab('other')">inne</button>
 
 </div>
 
@@ -111,6 +111,7 @@ margin:10px;
 <div id="vocals" class="tab-content">
 
 <div class="booking-container">
+
   
 
   <div class="calendar-container">
@@ -255,8 +256,9 @@ Zamów Mix & Mastering
         <div class="price-item"><span>Mix & Mastering:</span><span>1</span></div>
         <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
         <div class="price-item"><span>Cena:</span><span>399 zł</span></div>
-        <button class="buy-package-btn" data-name="BASIC" data-price="399">
-        Kup pakiet
+        <button class="package-checkout-btn" data-name="BASIC" data-price="399">
+        Kup Pakiet
+</button>
   </button>
       </div>
       <!-- Mix / Master -->
@@ -267,9 +269,9 @@ Zamów Mix & Mastering
         <div class="price-item"><span>Mix & Mastering:</span><span>2</span></div>
         <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
         <div class="price-item"><span>Cena:</span><span>599 zł</span></div>
-        <button class="buy-package-btn" data-name="STANDARD" data-price="599">
-        Kup pakiet
-  </button>
+        <button class="package-checkout-btn" data-name="STANDARD" data-price="599">
+        Kup Pakiet
+        </button>
       </div>
             <div class="pricing-card">
         <h3>PRO</h3>
@@ -278,9 +280,9 @@ Zamów Mix & Mastering
         <div class="price-item"><span>Mix & Mastering:</span><span>3</span></div>
         <div class="price-item"><span>Priorytetowe rezerwacje:</span><span>✅</span></div>
         <div class="price-item"><span>Cena:</span><span>999 zł</span></div>
-        <button class="buy-package-btn" data-name="PREMIUM" data-price="999">
-        Kup pakiet
-  </button>
+        <button class="package-checkout-btn" data-name="PRO" data-price="999">
+        Kup Pakiet
+      </button>
       </div>
     </div>
   </div>
@@ -292,30 +294,37 @@ Zamów Mix & Mastering
 </div>
 
 
-<!-- SALA -->
-<div id="room" class="tab-content hidden">
+<!-- INNE -->
+<div id="other" class="tab-content hidden">
 
-<h2 style="text-align:center">Wynajem sali</h2>
+  <div class="other-services-card">
 
-<div class="form-box">
+    <h2>Inne usługi</h2>
 
-<p>Możesz wynająć studio na:</p>
+    <p>
+      Oferujemy również dodatkowe realizacje, które aktualnie nie są dostępne w systemie rezerwacji online:
+    </p>
 
-<ul>
-<li>nagrania</li>
-<li>eventy</li>
-<li>próby</li>
-</ul>
+    <ul>
+      <li>🎙️ Podcasty</li>
+      <li>🎧 Podkład na zamówienie</li>
+      <li>🎬 Teledyski</li>
+    </ul>
 
-<label>Data</label>
-<input type="date">
+    <div class="contact-box">
 
-<label>Godziny</label>
-<input type="text" placeholder="np. 18:00 - 22:00">
+      <h3>Kontakt</h3>
 
-<button>Zarezerwuj salę</button>
+      <p>📧 <b>purpzstudio@gmail.com</b></p>
+      <p>📞 <b>882 842 003</b></p>
 
-</div>
+      <p class="note">
+        Zamówienia realizujemy indywidualnie po kontakcie.
+      </p>
+
+    </div>
+
+  </div>
 
 </div>
 
@@ -339,9 +348,63 @@ Zamów Mix & Mastering
 </section>
 
 
-<footer>
-© 2026 PURPZ Studio
+<footer class="footer">
+
+  <div class="footer-top">
+
+    <!-- LEWA -->
+    <div class="footer-brand">
+      <h2>PURPZ<br>STUDIO</h2>
+      <p>Twoja przestrzeń<br>kreatywna</p>
+    </div>
+
+    <!-- KOLUMNY -->
+    <div class="footer-columns">
+
+      <div class="footer-col">
+        <h4>Obsługa klienta</h4>
+        <p>Kontakt i pomoc</p>
+        <p>E-mail: studiopurpz@gmail.com</p>
+        <p>Telefon: +48 887 056 437</p>
+        <p>ul. Bolesława Krzywoustego 6/12, 51-165 Wrocław</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Usługi</h4>
+        <p>Wynajem studia</p>
+        <p>Mix & Mastering</p>
+        <p>Pakiety</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Przydatne linki</h4>
+        <p>Regulamin</p>
+        <p>Zasady uźytkowania</p>
+        <p>Zwroty i reklamacje</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Opinie</h4>
+        <p>Google</p>
+        <p>Facebook</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- DÓŁ -->
+  <div class="footer-bottom">
+    <p>© 2026 PURPZ Studio. Wszystkie prawa zastrzeżone</p>
+
+    <div class="footer-links">
+      <span>Polityka prywatności</span>
+      <span>Cookies</span>
+    </div>
+  </div>
+
 </footer>
+
 
 
 <script src="booking.js"></script>

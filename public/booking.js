@@ -252,20 +252,23 @@ fillHourSelects()
 renderCalendar()
 
 
-document.querySelectorAll(".buy-package-btn").forEach(btn => {
+document.querySelectorAll(".package-checkout-btn").forEach(btn => {
 
   btn.addEventListener("click", async () => {
 
     const name = btn.dataset.name
     const price = parseInt(btn.dataset.price)
 
+    btn.disabled = true
+    btn.innerText = "Przekierowanie..."
+
     try {
       const res = await fetch('https://purpzstudio.pl/create-package-checkout', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
-          name: name,
-          price: price * 100 // grosze
+          name,
+          price: price * 100
         })
       })
 
@@ -274,7 +277,10 @@ document.querySelectorAll(".buy-package-btn").forEach(btn => {
 
     } catch(err){
       console.error(err)
-      alert("Błąd przy płatności")
+      alert("Błąd płatności")
+
+      btn.disabled = false
+      btn.innerText = `Kup pakiet`
     }
 
   })
