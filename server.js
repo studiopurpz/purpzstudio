@@ -228,3 +228,33 @@ while(start < end){
 // 🔹 Tutaj zmiana dla Render
 const PORT = process.env.PORT || 4242
 app.listen(PORT, ()=>console.log(`Server running on port ${PORT}`))
+
+
+
+// admin panel
+
+app.get('/api/admin/bookings', express.json(), (req,res)=>{
+
+const reservations = readReservations()
+
+let data=[]
+
+
+for(const date in reservations){
+
+ reservations[date].forEach(r=>{
+
+ data.push({
+ date,
+ start:r.start,
+ end:r.end
+ })
+
+ })
+
+}
+
+
+res.json(data)
+
+})
