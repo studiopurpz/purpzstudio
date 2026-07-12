@@ -105,6 +105,6 @@ document.getElementById("logout").onclick=async()=>{
 
 await fetch("/admin-logout")
 
-window.location.href="/admin-login.html"
+window.location.href="/public/admin/admin-login.html"
 
 }
