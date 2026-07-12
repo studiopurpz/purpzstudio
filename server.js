@@ -64,31 +64,13 @@ const db = new sqlite3.Database('./database.sqlite')
 
 
 db.run(`
-CREATE TABLE IF NOT EXISTS admins(
-
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-username TEXT UNIQUE,
-
-password TEXT
-
+CREATE TABLE IF NOT EXISTS admins (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL
 )
 `)
 
-bcrypt.hash("test123",10,(err,hash)=>{
-
-db.run(
-`
-INSERT OR IGNORE INTO admins(username,password)
-VALUES(?,?)
-`,
-[
-"admin",
-hash
-]
-)
-
-})
 
 app.post('/admin-login',express.json(),(req,res)=>{
 
@@ -101,49 +83,30 @@ password
 
 
 db.get(
-"SELECT * FROM admins WHERE username=?",
-[username],
-async(err,user)=>{
+  'SELECT * FROM admins WHERE username = ?',
+  [username],
+  async (err,user)=>{
 
+    if(!user){
+      return res.json({success:false})
+    }
 
-if(!user){
+    const match =
+      await bcrypt.compare(password,user.password)
 
-return res.json({
-success:false
-})
+    if(match){
 
-}
+      req.session.admin = true
 
+      return res.json({success:true})
 
-const match =
-await bcrypt.compare(
-password,
-user.password
+    }
+
+    res.json({success:false})
+
+  }
 )
 
-
-
-if(match){
-
-
-req.session.admin=true
-
-
-return res.json({
-success:true
-})
-
-
-}
-
-
-
-res.json({
-success:false
-})
-
-
-})
 
 })
 
