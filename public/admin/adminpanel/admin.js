@@ -1,15 +1,4 @@
-fetch('/admin-check')
-.then(res=>{
 
-if(!res.ok){
-
-window.location.href="/admin/admin-login.html"
-
-}
-
-})
-
-console.log("Purpz Admin Panel Loaded");
 
 
 
