@@ -1,7 +1,3 @@
-
-
-
-
 const buttons = document.querySelectorAll(".tab-btn");
 const tabs = document.querySelectorAll(".tab-content");
 
