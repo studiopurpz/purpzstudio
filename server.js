@@ -72,41 +72,54 @@ CREATE TABLE IF NOT EXISTS admins (
 `)
 
 
-app.post('/admin-login',express.json(),(req,res)=>{
+app.post('/admin-login', express.json(), (req,res)=>{
 
-
-const {
-username,
-password
-}=req.body
-
+const {username,password}=req.body
 
 
 db.get(
-  'SELECT * FROM admins WHERE username = ?',
-  [username],
-  async (err,user)=>{
+"SELECT * FROM admins WHERE username=?",
+[username],
+async(err,user)=>{
 
-    if(!user){
-      return res.json({success:false})
-    }
 
-    const match =
-      await bcrypt.compare(password,user.password)
+if(err){
+console.log(err)
+return res.json({success:false})
+}
 
-    if(match){
 
-      req.session.admin = true
+if(!user){
+console.log("Nie znaleziono admina")
+return res.json({success:false})
+}
 
-      return res.json({success:true})
 
-    }
-
-    res.json({success:false})
-
-  }
+const match = await bcrypt.compare(
+password,
+user.password
 )
 
+
+if(match){
+
+req.session.admin = true
+
+return res.json({
+success:true
+})
+
+}
+
+
+console.log("Złe hasło")
+
+res.json({
+success:false
+})
+
+
+})
 
 })
 
