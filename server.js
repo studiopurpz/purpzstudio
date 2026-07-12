@@ -25,9 +25,9 @@ saveUninitialized:false
 
 app.get('/adminpanel.html', requireAdmin, (req,res)=>{
 
-  res.sendFile(
-    path.join(__dirname,'public','adminpanel.html')
-  )
+res.sendFile(
+path.join(__dirname,'public','admin','adminpanel.html')
+)
 
 })
 
