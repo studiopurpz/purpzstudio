@@ -3,7 +3,7 @@ fetch('/admin-check')
 
 if(!res.ok){
 
-window.location.href="/admin-login.html"
+window.location.href="/admin/admin-login.html"
 
 }
 
