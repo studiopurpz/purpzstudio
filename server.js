@@ -191,7 +191,7 @@ app.get('/admin-logout',(req,res)=>{
 
 req.session.destroy(()=>{
 
-res.redirect('/admin-login.html')
+res.redirect('/public/admin/admin-login.html')
 
 })
 
