@@ -202,3 +202,429 @@ loadStats()
 loadBookings()
 
 loadClients()
+
+
+async function loadReservations(){
+
+
+const res = await fetch(
+'/api/admin/reservations'
+)
+
+
+const reservations = await res.json()
+
+
+
+const box =
+document.getElementById(
+"reservationList"
+)
+
+
+
+box.innerHTML = ""
+
+
+
+if(reservations.length === 0){
+
+box.innerHTML =
+"<p>Brak rezerwacji</p>"
+
+return
+
+}
+
+
+
+reservations.forEach(r=>{
+
+
+box.innerHTML += `
+
+<div class="booking">
+
+
+<div>
+
+<h3>
+Studio nagrań
+</h3>
+
+<p>
+${r.date}
+</p>
+
+</div>
+
+
+
+<div>
+
+${r.start} -
+${r.end}
+
+</div>
+
+
+
+<div class="status paid">
+
+Opłacone
+
+</div>
+
+
+
+<div class="countdown">
+
+${getCountdown(r.date,r.start)}
+
+</div>
+
+
+
+</div>
+
+`
+
+
+
+})
+
+
+}
+
+
+
+function getCountdown(date,time){
+
+
+const target =
+new Date(
+date+"T"+time
+)
+
+
+const now =
+new Date()
+
+
+
+const diff =
+target-now
+
+
+
+if(diff < 0){
+
+return "Zakończone"
+
+}
+
+
+
+const hours =
+Math.floor(
+diff/(1000*60*60)
+)
+
+
+
+const days =
+Math.floor(
+hours/24
+)
+
+
+
+return days+" dni "+(hours%24)+"h"
+
+
+}
+
+
+
+
+loadReservations()
+
+
+async function loadMixes(){
+
+
+const res =
+await fetch('/api/admin/mixes')
+
+
+const mixes =
+await res.json()
+
+
+
+const box =
+document.getElementById(
+"mixList"
+)
+
+
+
+box.innerHTML=""
+
+
+
+if(mixes.length===0){
+
+box.innerHTML =
+"<p>Brak zamówień mix/mastering</p>"
+
+return
+
+}
+
+
+
+mixes.forEach(m=>{
+
+
+box.innerHTML += `
+
+
+<div class="mix-card">
+
+
+<div>
+
+<h3>
+${m.name || "Klient"}
+</h3>
+
+
+<p>
+${m.service}
+</p>
+
+
+<p>
+${m.email}
+</p>
+
+</div>
+
+
+
+<div>
+
+Cena:
+<br>
+
+${m.price} zł
+
+</div>
+
+
+
+<div class="status ${m.status === 'opłacone' ? 'paid':'pending'}">
+
+${m.status}
+
+</div>
+
+
+
+<div class="countdown">
+
+${new Date(m.created_at).toLocaleDateString()}
+
+</div>
+
+
+
+</div>
+
+
+`
+
+
+
+})
+
+
+}
+
+
+
+loadMixes()
+
+
+async function loadAllMixes(){
+
+
+const res =
+await fetch('/api/admin/mixes')
+
+
+const mixes =
+await res.json()
+
+
+
+const box =
+document.getElementById(
+"allMixList"
+)
+
+
+
+box.innerHTML=""
+
+
+
+if(mixes.length === 0){
+
+box.innerHTML =
+"<p>Brak zamówień Mix / Mastering</p>"
+
+return
+
+}
+
+
+
+mixes.forEach(m=>{
+
+
+box.innerHTML += `
+
+
+<div class="mix-card">
+
+
+<div>
+
+<h3>
+${m.name || "Brak imienia"}
+</h3>
+
+
+<p>
+${m.email}
+</p>
+
+
+<p>
+${m.phone || "Brak telefonu"}
+</p>
+
+</div>
+
+
+
+<div>
+
+${m.service}
+
+</div>
+
+
+
+<div>
+
+Cena:
+<br>
+
+${m.price} zł
+
+</div>
+
+
+
+<div class="status ${m.status === 'opłacone' ? 'paid':'pending'}">
+
+${m.status}
+
+</div>
+
+
+
+<div>
+
+${new Date(m.created_at).toLocaleDateString()}
+
+</div>
+
+
+
+</div>
+
+
+`
+
+
+})
+
+
+}
+
+
+
+loadAllMixes()
+
+
+app.get(
+'/api/admin/clients',
+requireAdmin,
+(req,res)=>{
+
+
+db.all(
+
+`
+
+SELECT
+
+MAX(name) as name,
+email,
+MAX(phone) as phone,
+COUNT(*) as orders
+
+
+FROM orders
+
+
+WHERE status='opłacone'
+
+
+GROUP BY email
+
+
+ORDER BY orders DESC
+
+
+`,
+
+[],
+
+
+(err,rows)=>{
+
+
+if(err){
+
+console.log(err)
+
+return res.status(500).json(err)
+
+}
+
+
+res.json(rows)
+
+
+}
+
+
+)
+
+
+})

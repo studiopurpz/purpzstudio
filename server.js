@@ -1469,6 +1469,50 @@ res.json(data)
 })
 
 
+app.get(
+'/api/admin/mixes',
+requireAdmin,
+(req,res)=>{
+
+
+db.all(
+
+`
+
+SELECT *
+
+FROM orders
+
+WHERE service='Mix / Mastering'
+
+ORDER BY created_at DESC
+
+`,
+
+[],
+
+
+(err,rows)=>{
+
+
+if(err){
+
+return res.status(500).json(err)
+
+}
+
+
+res.json(rows)
+
+
+}
+
+
+)
+
+
+})
+
 
 
 // =========================
@@ -1485,17 +1529,25 @@ db.all(
 
 `
 
-SELECT 
-name,
+SELECT
+
+MAX(name) as name,
 email,
-phone,
-COUNT(*) as visits
+MAX(phone) as phone,
+COUNT(*) as orders
+
 
 FROM orders
 
+
+WHERE status='opłacone'
+
+
 GROUP BY email
 
-ORDER BY visits DESC
+
+ORDER BY orders DESC
+
 
 `,
 
@@ -1506,6 +1558,8 @@ ORDER BY visits DESC
 
 
 if(err){
+
+console.log(err)
 
 return res.status(500).json(err)
 
