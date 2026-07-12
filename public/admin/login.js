@@ -86,7 +86,7 @@ const data = await response.json()
 
 if(data.success){
 
-window.location.href="/admin.html"
+window.location.href="/adminpanel/adminpanel.html"
 
 }
 
