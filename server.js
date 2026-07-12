@@ -1433,6 +1433,95 @@ row.clients || 0
 )
 
 
+// =========================
+// ADMIN - REZERWACJE
+// =========================
+
+app.get(
+'/api/admin/reservations',
+requireAdmin,
+(req,res)=>{
+
+const reservations = readReservations()
+
+let data=[]
+
+
+for(const date in reservations){
+
+reservations[date].forEach(r=>{
+
+data.push({
+
+date,
+start:r.start,
+end:r.end
+
+})
+
+})
+
+}
+
+
+res.json(data)
+
+})
+
+
+
+
+// =========================
+// ADMIN - KLIENCI
+// =========================
+
+app.get(
+'/api/admin/clients',
+requireAdmin,
+(req,res)=>{
+
+
+db.all(
+
+`
+
+SELECT 
+name,
+email,
+phone,
+COUNT(*) as visits
+
+FROM orders
+
+GROUP BY email
+
+ORDER BY visits DESC
+
+`,
+
+[],
+
+
+(err,rows)=>{
+
+
+if(err){
+
+return res.status(500).json(err)
+
+}
+
+
+res.json(rows)
+
+
+}
+
+
+)
+
+
+})
 
 
 

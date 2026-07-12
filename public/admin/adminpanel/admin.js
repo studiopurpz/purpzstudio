@@ -58,3 +58,158 @@ document
 
 
 });
+
+
+
+async function loadStats(){
+
+const res = await fetch('/api/admin/stats')
+
+const data = await res.json()
+
+
+document.getElementById(
+"dashboardIncome"
+).innerText =
+data.income + " zł"
+
+
+
+document.getElementById(
+"dashboardOrders"
+).innerText =
+data.orders
+
+
+
+document.getElementById(
+"dashboardClients"
+).innerText =
+data.clients
+
+
+}
+
+
+
+async function loadBookings(){
+
+const res =
+await fetch('/api/admin/reservations')
+
+
+const data =
+await res.json()
+
+
+const box =
+document.getElementById(
+"bookingList"
+)
+
+
+box.innerHTML=""
+
+
+data.forEach(r=>{
+
+
+box.innerHTML += `
+
+<div class="booking">
+
+<div>
+${r.date}
+</div>
+
+
+<div>
+${r.start} - ${r.end}
+</div>
+
+
+<div class="status paid">
+Opłacone
+</div>
+
+
+</div>
+
+
+`
+
+
+})
+
+
+}
+
+
+
+async function loadClients(){
+
+
+const res =
+await fetch('/api/admin/clients')
+
+
+const data =
+await res.json()
+
+
+const box =
+document.getElementById(
+"clientList"
+)
+
+
+box.innerHTML=""
+
+
+data.forEach(c=>{
+
+
+box.innerHTML += `
+
+<div class="booking">
+
+
+<div>
+${c.name || "Brak"}
+</div>
+
+
+<div>
+${c.email}
+</div>
+
+
+<div>
+${c.phone || "-"}
+</div>
+
+
+<div>
+${c.visits} wizyt
+</div>
+
+
+</div>
+
+
+`
+
+
+})
+
+
+}
+
+
+
+
+loadStats()
+
+loadBookings()
+
+loadClients()
