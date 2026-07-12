@@ -1471,43 +1471,54 @@ app.get(
 requireAdmin,
 (req,res)=>{
 
-const reservations = readReservations()
 
-let data=[]
+db.all(
 
-const now = new Date()
+`
+
+SELECT
+
+name,
+email,
+phone,
+start_date,
+start_hour,
+end_date,
+end_hour,
+price,
+status
+
+FROM orders
+
+WHERE service='Wynajem studia'
+
+ORDER BY start_date ASC, start_hour ASC
+
+`,
+
+[],
 
 
-for(const date in reservations){
-
-reservations[date].forEach(r=>{
+(err,rows)=>{
 
 
-const endTime = new Date(
-date + "T" + r.end
+if(err){
+
+console.log(err)
+
+return res.status(500).json(err)
+
+}
+
+
+res.json(rows)
+
+
+}
+
+
 )
 
-
-// pokazuj tylko przyszłe rezerwacje
-if(endTime > now){
-
-data.push({
-
-date,
-start:r.start,
-end:r.end
-
-})
-
-}
-
-
-})
-
-}
-
-
-res.json(data)
 
 })
 

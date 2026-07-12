@@ -249,14 +249,14 @@ Studio nagrań
 </h3>
 
 <p>
-${r.date}
+${r.start_date}
 </p>
 
 </div>
 
 
 <div>
-${r.start} - ${r.end}
+${r.start_hour} - ${r.end_hour}
 </div>
 
 
