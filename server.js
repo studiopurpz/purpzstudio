@@ -1250,7 +1250,15 @@ reservations[date].push({
 
 start:hStart,
 
-end:hEnd
+end:hEnd,
+
+name:data.name,
+
+email:data.email,
+
+phone:data.phone,
+
+status:"opłacone"
 
 })
 
