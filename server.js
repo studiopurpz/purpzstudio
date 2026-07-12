@@ -1265,9 +1265,26 @@ start=next
 
 
 
-saveReservations(
-reservations
-)
+// usuwanie starych rezerwacji
+const now = new Date()
+
+for(const date in reservations){
+
+reservations[date] = reservations[date].filter(r=>{
+
+return new Date(date+"T"+r.end) > now
+
+})
+
+
+if(reservations[date].length === 0){
+delete reservations[date]
+}
+
+}
+
+
+saveReservations(reservations)
 
 
 
@@ -1450,10 +1467,21 @@ const reservations = readReservations()
 
 let data=[]
 
+const now = new Date()
+
 
 for(const date in reservations){
 
 reservations[date].forEach(r=>{
+
+
+const endTime = new Date(
+date + "T" + r.end
+)
+
+
+// pokazuj tylko przyszłe rezerwacje
+if(endTime > now){
 
 data.push({
 
@@ -1462,6 +1490,9 @@ start:r.start,
 end:r.end
 
 })
+
+}
+
 
 })
 

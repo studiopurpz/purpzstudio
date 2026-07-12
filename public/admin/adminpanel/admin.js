@@ -179,7 +179,7 @@ ${c.phone || "-"}
 
 
 <div>
-${c.visits} wizyt
+${c.orders} zamówień
 </div>
 
 
