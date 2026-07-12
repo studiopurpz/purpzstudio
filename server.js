@@ -174,13 +174,17 @@ VALUES(?,?,?,?,?,?,?,?,?,?,?)
 `,
 
 [
-
-data.name,
-data.email,
-data.phone,
-data.service,
-data.price
-
+data.name || "",
+data.email || "",
+data.phone || "",
+data.service || "",
+data.price || 0,
+"oczekuje",
+"",
+data.start_date || "",
+data.start_hour || "",
+data.end_date || "",
+data.end_hour || ""
 ],
 
 
@@ -665,7 +669,7 @@ phone,
 
 
 service:
-`Pakiet ${packageName}`,
+`Pakiet ${name}`,
 
 
 price
@@ -708,7 +712,7 @@ product_data:{
 
 
 name:
-`Pakiet ${packageName}`
+`Pakiet ${name}`
 
 
 },
