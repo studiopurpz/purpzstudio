@@ -255,20 +255,28 @@ ${r.date}
 </div>
 
 
+<div>
+${r.start} - ${r.end}
+</div>
+
 
 <div>
 
-${r.start} -
-${r.end}
+${r.name || "Brak danych"}
+
+<br>
+
+${r.email || ""}
+
+<br>
+
+${r.phone || ""}
 
 </div>
 
 
-
 <div class="status paid">
-
-Opłacone
-
+${r.status || "Opłacone"}
 </div>
 
 
