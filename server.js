@@ -23,7 +23,7 @@ saveUninitialized:false
 
 }))
 
-app.get('/adminpanel.html', requireAdmin, (req,res)=>{
+app.get('/admin/adminpanel.html', requireAdmin, (req,res)=>{
 
 res.sendFile(
 path.join(__dirname,'public','admin','adminpanel.html')
@@ -74,6 +74,8 @@ CREATE TABLE IF NOT EXISTS admins (
 
 app.post('/admin-login', express.json(), (req,res)=>{
 
+console.log("DANE Z FORMULARZA:", req.body)
+
 const {username,password}=req.body
 
 
@@ -81,6 +83,8 @@ db.get(
 "SELECT * FROM admins WHERE username=?",
 [username],
 async(err,user)=>{
+
+console.log("USER Z BAZY:", user)
 
 
 if(err){
@@ -99,6 +103,8 @@ const match = await bcrypt.compare(
 password,
 user.password
 )
+
+console.log("HASŁO PASUJE:", match)
 
 
 if(match){
