@@ -22,6 +22,15 @@ resave:false,
 saveUninitialized:false
 
 }))
+
+app.get('/adminpanel.html', requireAdmin, (req,res)=>{
+
+  res.sendFile(
+    path.join(__dirname,'public','adminpanel.html')
+  )
+
+})
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 console.log("Stripe key:", process.env.STRIPE_KEY ? "OK" : "BRAK");
@@ -159,6 +168,31 @@ app.get('/admin-check',adminAuth,(req,res)=>{
 
 res.json({
 logged:true
+})
+
+})
+
+
+function requireAdmin(req, res, next){
+
+  if(req.session && req.session.admin){
+
+    next()
+
+  } else {
+
+    res.redirect('/admin-login.html')
+
+  }
+
+}
+
+app.get('/admin-logout',(req,res)=>{
+
+req.session.destroy(()=>{
+
+res.redirect('/admin-login.html')
+
 })
 
 })
