@@ -181,7 +181,7 @@ function requireAdmin(req, res, next){
 
   } else {
 
-    res.redirect('/admin-login.html')
+    res.redirect('/public/admin/admin-login.html')
 
   }
 
