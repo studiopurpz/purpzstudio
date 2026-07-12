@@ -181,7 +181,7 @@ function requireAdmin(req, res, next){
 
   } else {
 
-    res.redirect('/public/admin/admin-login.html')
+    res.redirect('public/admin/admin-login.html')
 
   }
 
@@ -191,7 +191,7 @@ app.get('/admin-logout',(req,res)=>{
 
 req.session.destroy(()=>{
 
-res.redirect('/public/admin/admin-login.html')
+res.redirect('public/admin/admin-login.html')
 
 })
 
