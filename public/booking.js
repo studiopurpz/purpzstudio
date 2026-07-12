@@ -12,374 +12,1024 @@ const priceDisplay = document.getElementById("price")
 const reserveBtn = document.getElementById("reserveBtn")
 const promoCodeInput = document.getElementById("promoCode")
 
-let currentDate = new Date()
-let reservations = {} 
-let discount = 0 
 
-// godziny 0-23
+let currentDate = new Date()
+let reservations = {}
+let discount = 0
+
+
 const hours=[]
-for(let h=0;h<24;h++) hours.push(h.toString().padStart(2,"0")+":00")
+
+for(let h=0; h<24; h++){
+    hours.push(
+        h.toString().padStart(2,"0")+":00"
+    )
+}
+
 
 const months=[
-"Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
-"Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"
+"Styczeń","Luty","Marzec","Kwiecień",
+"Maj","Czerwiec","Lipiec","Sierpień",
+"Wrzesień","Październik","Listopad","Grudzień"
 ]
 
+
 function formatDate(date){
-  const y=date.getFullYear()
-  const m=(date.getMonth()+1).toString().padStart(2,"0")
-  const d=date.getDate().toString().padStart(2,"0")
-  return `${y}-${m}-${d}`
+
+const y=date.getFullYear()
+const m=(date.getMonth()+1).toString().padStart(2,"0")
+const d=date.getDate().toString().padStart(2,"0")
+
+return `${y}-${m}-${d}`
+
 }
 
-// status dnia dla kolorowania
+
+
 function getDayStatus(dateStr){
-  const dayReservations = reservations[dateStr]
-  if(!dayReservations || dayReservations.length===0) return "free"
-  if(dayReservations.length===1 && dayReservations[0].start==="00:00" && dayReservations[0].end==="24:00") return "full"
-  return "partial"
+
+const dayReservations = reservations[dateStr]
+
+if(!dayReservations || dayReservations.length===0)
+return "free"
+
+
+if(
+dayReservations.length===1 &&
+dayReservations[0].start==="00:00" &&
+dayReservations[0].end==="24:00"
+)
+return "full"
+
+
+return "partial"
+
 }
 
-// sprawdza czy godzina jest zajęta
-function isHourReserved(dateStr, hour){
-  const dayReservations = reservations[dateStr]
-  if(!dayReservations) return false
-  for(const r of dayReservations){
-    const startH = parseInt(r.start.split(":")[0])
-    const endH = parseInt(r.end.split(":")[0])
-    const hInt = parseInt(hour.split(":")[0])
-    if(hInt >= startH && hInt < endH) return true
-  }
-  return false
+
+
+function isHourReserved(dateStr,hour){
+
+const dayReservations = reservations[dateStr]
+
+if(!dayReservations)
+return false
+
+
+for(const r of dayReservations){
+
+const start =
+parseInt(r.start.split(":")[0])
+
+const end =
+parseInt(r.end.split(":")[0])
+
+const current =
+parseInt(hour.split(":")[0])
+
+
+if(current>=start && current<end)
+return true
+
 }
 
-// render kalendarza
+return false
+
+}
+
+
+
+
+
 async function renderCalendar(){
-  calendar.innerHTML=""
 
-  try{
-    const res = await fetch('/api/reservations')
-    reservations = await res.json()
-  }catch(err){
-    console.log("Nie udało się pobrać rezerwacji z backendu", err)
-  }
+calendar.innerHTML=""
 
-  const year=currentDate.getFullYear()
-  const month=currentDate.getMonth()
-  monthYear.innerText=`${months[month]} ${year}`
 
-  const firstDay=new Date(year,month,1)
-  let startDay=firstDay.getDay()
-  if(startDay===0) startDay=7
-  const daysInMonth=new Date(year,month+1,0).getDate()
+try{
 
-  for(let i=1;i<startDay;i++) calendar.appendChild(document.createElement("div"))
+const res = await fetch('/api/reservations')
 
-  for(let day=1;day<=daysInMonth;day++){
-    const date=new Date(year,month,day)
-    const dateStr=formatDate(date)
-    const div=document.createElement("div")
-    div.className="day"
-    div.innerText=day
+reservations = await res.json()
 
-    // Sprawdzenie 48h
-    const now = new Date()
-    const diffHours = (date.getTime() - now.getTime()) / (1000*60*60)
-    if(diffHours < 48){
-      div.classList.add("disabled-day")
-      div.title = "Rezerwacja możliwa min. 48h wcześniej"
-    } else {
-      const status=getDayStatus(dateStr)
-      if(status==="free") div.classList.add("fully-free")
-      if(status==="partial") div.classList.add("partially-booked")
-      if(status==="full") div.classList.add("fully-booked")
-      div.onclick=()=>{
-        showDayInfo(dateStr)
 
-        // Ustawienie daty w panelu rezerwacji
-        startDateInput.value = dateStr
-        endDateInput.value = dateStr
-        calculatePrice()
-      }
-    }
+}catch(err){
 
-    calendar.appendChild(div)
-  }
+console.log(
+"Nie pobrano rezerwacji",
+err
+)
+
 }
 
-// pokaz panel z zajętymi godzinami
+
+
+const year=currentDate.getFullYear()
+const month=currentDate.getMonth()
+
+
+monthYear.innerText =
+`${months[month]} ${year}`
+
+
+
+const firstDay =
+new Date(year,month,1)
+
+
+let startDay =
+firstDay.getDay()
+
+
+if(startDay===0)
+startDay=7
+
+
+
+const days =
+new Date(year,month+1,0).getDate()
+
+
+
+for(let i=1;i<startDay;i++){
+
+calendar.appendChild(
+document.createElement("div")
+)
+
+}
+
+
+
+
+for(let day=1;day<=days;day++){
+
+
+const date =
+new Date(year,month,day)
+
+
+const dateStr =
+formatDate(date)
+
+
+
+const div =
+document.createElement("div")
+
+
+div.className="day"
+
+div.innerText=day
+
+
+
+const now=new Date()
+
+const diff =
+(date-now)/(1000*60*60)
+
+
+
+if(diff<48){
+
+div.classList.add(
+"disabled-day"
+)
+
+
+}else{
+
+
+const status =
+getDayStatus(dateStr)
+
+
+
+if(status==="free")
+div.classList.add(
+"fully-free"
+)
+
+
+if(status==="partial")
+div.classList.add(
+"partially-booked"
+)
+
+
+if(status==="full")
+div.classList.add(
+"fully-booked"
+)
+
+
+
+div.onclick=()=>{
+
+
+showDayInfo(dateStr)
+
+
+startDateInput.value=dateStr
+
+endDateInput.value=dateStr
+
+
+calculatePrice()
+
+
+}
+
+
+}
+
+
+
+calendar.appendChild(div)
+
+
+}
+
+
+}
+
+
+
+
+
+
 function showDayInfo(dateStr){
-  title.innerText=dateStr
-  list.innerHTML=""
-  const dayReservations=reservations[dateStr]
 
-  if(!dayReservations || dayReservations.length===0){
-    list.innerHTML='<div class="free-text">W tym dniu wszystkie godziny są wolne</div>'
-  } else {
-    list.innerHTML="<b>Zarezerwowane godziny:</b><br><br>"
-    dayReservations.forEach(r=>{
-      const div=document.createElement("div")
-      div.className="reserved-block"
-      div.innerText=`${r.start} – ${r.end}`
-      list.appendChild(div)
-    })
-  }
-  panel.classList.remove("hidden")
+title.innerText=dateStr
 
-  fillHourSelects(dateStr)
-}
-
-// wypełnienie selectów godzin
-function fillHourSelects(selectedDate){
-  startHourSelect.innerHTML=""
-  endHourSelect.innerHTML=""
-  hours.forEach(h=>{
-    const opt1=document.createElement("option")
-    opt1.value=h; opt1.innerText=h
-    if(selectedDate && isHourReserved(selectedDate, h)) opt1.disabled = true
-    startHourSelect.appendChild(opt1)
-
-    const opt2=document.createElement("option")
-    opt2.value=h; opt2.innerText=h
-    if(selectedDate && isHourReserved(selectedDate, h)) opt2.disabled = true
-    endHourSelect.appendChild(opt2)
-  })
-}
-
-// obliczanie ceny
-function calculatePrice(){
-  const sDate=startDateInput.value
-  const sHour=startHourSelect.value
-  const eDate=endDateInput.value
-  const eHour=endHourSelect.value
-  if(!sDate||!sHour||!eDate||!eHour) return
-
-  let start=new Date(sDate+"T"+sHour)
-  let end=new Date(eDate+"T"+eHour)
-  if(end<=start) end=new Date(end.getTime()+60*60*1000)
-
-  let total=0
-  let current=new Date(start)
-  while(current<end){
-    const day=current.getDay()
-    const hour=current.getHours()
-    let rate=0
-    if(day===0||day===6){
-      rate=(hour>=6 && hour<23)?100:120
-    } else {
-      rate=(hour>=6 && hour<23)?80:100
-    }
-    total+=rate
-    current=new Date(current.getTime()+60*60*1000)
-  }
-
-  const code = promoCodeInput.value.trim()
-  if(code === "PURPZ15") discount = 15
-  else discount = 0
-
-  total = Math.round(total * (1 - discount/100))
-  priceDisplay.innerText = total
-}
-
-// eventy reservation panel
-[startDateInput,endDateInput,startHourSelect,endHourSelect].forEach(el=>el.addEventListener("change",calculatePrice))
-promoCodeInput.addEventListener("input", calculatePrice)
-
-// kliknięcie rezerwuj
-reserveBtn.onclick = async () => {
-  const sDate = startDateInput.value
-  const eDate = endDateInput.value
-  const sHour = startHourSelect.value
-  const eHour = endHourSelect.value
-  const totalPrice = parseInt(priceDisplay.innerText)
-
-  if(!sDate||!eDate||!sHour||!eHour){
-    alert("Wybierz daty i godziny")
-    return
-  }
-
-  let start = new Date(sDate+"T"+sHour)
-  let end = new Date(eDate+"T"+eHour)
-
-  const now = new Date()
-  const diffHours = (start.getTime() - now.getTime()) / (1000*60*60)
-  if(diffHours < 48){
-    alert("Nie można rezerwować na mniej niż 48 godzin przed rozpoczęciem")
-    return
-  }
-
-  const startHourInt = parseInt(sHour.split(":")[0])
-  for(let h=startHourInt; h<parseInt(eHour.split(":")[0]); h++){
-    if(isHourReserved(sDate, h+":00")){
-      alert("Wybrane godziny są już zajęte")
-      return
-    }
-  }
-
-  if(end<=start) {alert("Minimalna rezerwacja to 1 godzina"); return}
-
-  try {
-    const res = await fetch('https://purpzstudio.pl/create-checkout-session', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        startDate:sDate,
-        startHour:sHour,
-        endDate:eDate,
-        endHour:eHour,
-        totalPrice: totalPrice*100
-      })
-    })
-    const data = await res.json()
-    window.location.href = data.url
-  } catch(err){
-    console.error(err)
-    alert('Błąd przy tworzeniu płatności')
-  }
-}
-
-// strzałki miesiąca
-document.getElementById("prevMonth").onclick=()=>{
-  currentDate.setMonth(currentDate.getMonth()-1)
-  renderCalendar()
-}
-document.getElementById("nextMonth").onclick=()=>{
-  currentDate.setMonth(currentDate.getMonth()+1)
-  renderCalendar()
-}
-
-fillHourSelects()
-renderCalendar()
+list.innerHTML=""
 
 
-document.querySelectorAll(".package-checkout-btn").forEach(btn => {
+const dayReservations =
+reservations[dateStr]
 
-  btn.addEventListener("click", async () => {
 
-    const name = btn.dataset.name
-    const price = parseInt(btn.dataset.price)
 
-    btn.disabled = true
-    btn.innerText = "Przekierowanie..."
+if(!dayReservations){
 
-    try {
-      const res = await fetch('https://purpzstudio.pl/create-package-checkout', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          name,
-          price: price * 100
-        })
-      })
 
-      const data = await res.json()
-      window.location.href = data.url
+list.innerHTML=
+"Wszystkie godziny wolne"
 
-    } catch(err){
-      console.error(err)
-      alert("Błąd płatności")
 
-      btn.disabled = false
-      btn.innerText = `Kup pakiet`
-    }
+}else{
 
-  })
+
+list.innerHTML=
+"<b>Zarezerwowane:</b><br><br>"
+
+
+
+dayReservations.forEach(r=>{
+
+
+const div =
+document.createElement("div")
+
+
+div.className=
+"reserved-block"
+
+
+div.innerText =
+`${r.start} - ${r.end}`
+
+
+list.appendChild(div)
+
 
 })
 
 
-const trackCount = document.getElementById("trackCount")
-const serviceType = document.getElementById("serviceType")
-const mixPromo = document.getElementById("mixPromo")
-const mixPrice = document.getElementById("mixPrice")
-const expressService = document.getElementById("expressService")
+}
+
+
+panel.classList.remove("hidden")
+
+
+fillHourSelects(dateStr)
+
+
+}
+
+
+
+
+
+
+function fillHourSelects(date){
+
+startHourSelect.innerHTML=""
+endHourSelect.innerHTML=""
+
+
+hours.forEach(h=>{
+
+
+let a=document.createElement("option")
+
+a.value=h
+
+a.innerText=h
+
+
+if(date && isHourReserved(date,h))
+a.disabled=true
+
+
+
+startHourSelect.appendChild(a)
+
+
+
+
+let b=document.createElement("option")
+
+
+b.value=h
+
+b.innerText=h
+
+
+if(date && isHourReserved(date,h))
+b.disabled=true
+
+
+
+endHourSelect.appendChild(b)
+
+
+
+})
+
+
+}
+
+
+// ===============================
+// LICZENIE CENY STUDIO
+// ===============================
+
+
+function calculatePrice(){
+
+const sDate=startDateInput.value
+const sHour=startHourSelect.value
+const eDate=endDateInput.value
+const eHour=endHourSelect.value
+
+
+if(!sDate || !sHour || !eDate || !eHour)
+return
+
+
+
+let start =
+new Date(sDate+"T"+sHour)
+
+
+let end =
+new Date(eDate+"T"+eHour)
+
+
+
+if(end<=start){
+
+end =
+new Date(
+end.getTime()+60*60*1000
+)
+
+}
+
+
+
+let total=0
+
+let current =
+new Date(start)
+
+
+
+while(current<end){
+
+
+const day =
+current.getDay()
+
+
+const hour =
+current.getHours()
+
+
+
+let rate=0
+
+
+
+if(day===0 || day===6){
+
+rate =
+(hour>=6 && hour<23)
+?100
+:120
+
+
+}else{
+
+
+rate =
+(hour>=6 && hour<23)
+?80
+:100
+
+}
+
+
+
+total+=rate
+
+
+current =
+new Date(
+current.getTime()+60*60*1000
+)
+
+
+
+}
+
+
+
+const code =
+promoCodeInput.value.trim()
+
+
+
+if(code==="PURPZ15")
+discount=15
+
+else
+discount=0
+
+
+
+total =
+Math.round(
+total*(1-discount/100)
+)
+
+
+
+priceDisplay.innerText=total
+
+
+
+}
+
+
+
+
+
+[startDateInput,endDateInput,startHourSelect,endHourSelect]
+.forEach(el=>{
+
+
+el.addEventListener(
+"change",
+calculatePrice
+)
+
+
+})
+
+
+promoCodeInput.addEventListener(
+"input",
+calculatePrice
+)
+
+
+
+
+
+// ===============================
+// REZERWACJA STUDIO STRIPE
+// ===============================
+
+
+reserveBtn.onclick = async()=>{
+
+
+const clientName =
+document.getElementById("clientName")?.value
+
+
+const clientEmail =
+document.getElementById("clientEmail")?.value
+
+
+const clientPhone =
+document.getElementById("clientPhone")?.value
+
+
+
+if(!clientName || !clientEmail || !clientPhone){
+
+alert(
+"Uzupełnij dane kontaktowe"
+)
+
+return
+
+}
+
+
+
+
+const body={
+
+
+name:clientName,
+
+email:clientEmail,
+
+phone:clientPhone,
+
+
+startDate:startDateInput.value,
+
+startHour:startHourSelect.value,
+
+
+endDate:endDateInput.value,
+
+endHour:endHourSelect.value,
+
+
+totalPrice:
+parseInt(priceDisplay.innerText)*100,
+
+
+service:
+"Wynajem studia"
+
+
+}
+
+
+
+try{
+
+
+const res =
+await fetch(
+"https://purpzstudio.pl/create-checkout-session",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+
+body:
+JSON.stringify(body)
+
+
+})
+
+
+const data =
+await res.json()
+
+
+window.location.href=data.url
+
+
+
+}catch(err){
+
+console.error(err)
+
+alert(
+"Błąd płatności"
+)
+
+}
+
+
+
+}
+
+
+
+
+
+// ===============================
+// PAKIETY
+// ===============================
+
+
+
+document.querySelectorAll(
+".package-checkout-btn"
+)
+.forEach(btn=>{
+
+
+btn.addEventListener(
+"click",
+async()=>{
+
+
+
+const name =
+btn.dataset.name
+
+
+const price =
+parseInt(btn.dataset.price)
+
+
+
+const clientName =
+document.getElementById(
+"packageName"
+)?.value
+
+
+
+const email =
+document.getElementById(
+"packageEmail"
+)?.value
+
+
+
+const phone =
+document.getElementById(
+"packagePhone"
+)?.value
+
+
+
+
+if(!clientName || !email || !phone){
+
+alert(
+"Wpisz dane kontaktowe"
+)
+
+return
+
+}
+
+
+
+
+
+try{
+
+
+const res =
+await fetch(
+"https://purpzstudio.pl/create-package-checkout",
+{
+
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+
+body:
+JSON.stringify({
+
+name,
+
+price:price*100,
+
+
+clientName,
+
+email,
+
+phone,
+
+
+service:
+"Pakiet "+name
+
+
+})
+
+
+})
+
+
+const data =
+await res.json()
+
+
+window.location.href=data.url
+
+
+
+}catch(err){
+
+console.error(err)
+
+alert(
+"Błąd płatności"
+)
+
+
+}
+
+
+
+})
+
+
+})
+
+
+
+
+
+
+// ===============================
+// MIX MASTERING
+// ===============================
+
+
+
+const trackCount =
+document.getElementById("trackCount")
+
+
+const serviceType =
+document.getElementById("serviceType")
+
+
+const mixPromo =
+document.getElementById("mixPromo")
+
+
+const mixPrice =
+document.getElementById("mixPrice")
+
+
+const expressService =
+document.getElementById("expressService")
+
+
+
+
 
 function calculateMixPrice(){
 
+
 let total =
-parseInt(trackCount.value) +
+parseInt(trackCount.value)
++
 parseInt(serviceType.value)
 
-// Express +150 zł
+
+
 if(expressService.checked){
-  total += 150
-}
 
-if(total < 0) total = 0
-
-if(mixPromo.value.trim() === "PURPZ15"){
-  total = Math.round(total * 0.85)
-}
-
-mixPrice.innerText = total
+total+=150
 
 }
 
-trackCount?.addEventListener("change", calculateMixPrice)
-serviceType?.addEventListener("change", calculateMixPrice)
-mixPromo?.addEventListener("input", calculateMixPrice)
-expressService?.addEventListener("change", calculateMixPrice)
+
+
+if(
+mixPromo.value.trim()
+==="PURPZ15"
+){
+
+total =
+Math.round(
+total*0.85
+)
+
+}
+
+
+
+mixPrice.innerText=total
+
+
+
+}
+
+
+
+trackCount?.addEventListener(
+"change",
+calculateMixPrice
+)
+
+
+serviceType?.addEventListener(
+"change",
+calculateMixPrice
+)
+
+
+mixPromo?.addEventListener(
+"input",
+calculateMixPrice
+)
+
+
+expressService?.addEventListener(
+"change",
+calculateMixPrice
+)
+
+
 
 calculateMixPrice()
 
-document.getElementById("mixCheckoutBtn")
-.addEventListener("click", async () => {
 
-const total =
-parseInt(mixPrice.innerText)
+
+
+
+document
+.getElementById("mixCheckoutBtn")
+?.addEventListener(
+"click",
+async()=>{
+
+
+const name =
+document.getElementById("mixName")?.value
+
+
+const phone =
+document.getElementById("mixPhone")?.value
+
 
 const email =
 document.getElementById("mixEmail").value
 
+
 const drive =
 document.getElementById("mixDrive").value
 
-if(!email || !drive){
-alert("Uzupełnij email i link do plików")
-return
-}
 
-const res = await fetch(
-'https://purpzstudio.pl/create-mix-checkout',
-{
-method:'POST',
-headers:{
-'Content-Type':'application/json'
-},
-body: JSON.stringify({
 
-  email,
-  drive,
+if(!name || !phone || !email || !drive){
 
-  tracks:
-  trackCount.options[
-  trackCount.selectedIndex
-  ].text,
-
-  service:
-  serviceType.options[
-  serviceType.selectedIndex
-  ].text,
-
-  express:
-  expressService.checked ? "TAK" : "NIE",
-
-  reference:
-  document.getElementById("referenceTrack").value,
-
-  description:
-  document.getElementById("projectDescription").value,
-
-  totalPrice:
-  total * 100
-
-})
-}
+alert(
+"Uzupełnij wszystkie dane"
 )
 
-const data = await res.json()
+return
 
-window.location.href = data.url
+}
+
+
+
+
+
+const res =
+await fetch(
+"https://purpzstudio.pl/create-mix-checkout",
+{
+
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+
+body:
+JSON.stringify({
+
+
+name,
+
+phone,
+
+email,
+
+
+drive,
+
+
+tracks:
+trackCount.options[
+trackCount.selectedIndex
+].text,
+
+
+service:
+serviceType.options[
+serviceType.selectedIndex
+].text,
+
+
+express:
+expressService.checked
+?"TAK"
+:"NIE",
+
+
+
+reference:
+document.getElementById(
+"referenceTrack"
+).value,
+
+
+
+description:
+document.getElementById(
+"projectDescription"
+).value,
+
+
+
+totalPrice:
+parseInt(mixPrice.innerText)*100
+
+
 
 })
 
+
+})
+
+
+const data =
+await res.json()
+
+
+window.location.href=data.url
+
+
+
+})
+
+
+
+
+
+
+// ===============================
+// KALENDARZ
+// ===============================
+
+
+
+document
+.getElementById("prevMonth")
+.onclick=()=>{
+
+currentDate.setMonth(
+currentDate.getMonth()-1
+)
+
+renderCalendar()
+
+}
+
+
+
+document
+.getElementById("nextMonth")
+.onclick=()=>{
+
+
+currentDate.setMonth(
+currentDate.getMonth()+1
+)
+
+
+renderCalendar()
+
+
+}
+
+
+
+
+fillHourSelects()
+
+renderCalendar()
