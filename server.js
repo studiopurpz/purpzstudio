@@ -100,12 +100,41 @@ service TEXT,
 
 price INTEGER,
 
-status TEXT DEFAULT 'opłacone',
+status TEXT DEFAULT 'oczekuje',
+
+stripe_id TEXT,
+
+start_date TEXT,
+start_hour TEXT,
+
+end_date TEXT,
+end_hour TEXT,
 
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 
 )
 `)
+
+function addColumn(column){
+
+db.run(
+`ALTER TABLE orders ADD COLUMN ${column} TEXT`,
+(err)=>{
+
+if(err && !err.message.includes("duplicate column")){
+console.log(err)
+}
+
+})
+
+}
+
+
+addColumn("stripe_id")
+addColumn("start_date")
+addColumn("start_hour")
+addColumn("end_date")
+addColumn("end_hour")
 
 
 
@@ -132,11 +161,15 @@ email,
 phone,
 service,
 price,
-status
-
+status,
+stripe_id,
+start_date,
+start_hour,
+end_date,
+end_hour
 )
 
-VALUES (?,?,?,?,?,'oczekuje')
+VALUES(?,?,?,?,?,?,?,?,?,?,?)
 
 `,
 
@@ -1042,28 +1075,39 @@ phone,
 service,
 price,
 status,
-stripe_id
+stripe_id,
+start_date,
+start_hour,
+end_date,
+end_hour
 )
 
-VALUES(?,?,?,?,?,?,?)
+VALUES(?,?,?,?,?,?,?,?,?,?,?)
 
 `,
 
 [
+data.name || "",
 
-data.name,
+data.email || "",
 
-data.email,
+data.phone || "",
 
-data.phone,
-
-data.service || data.product,
+data.service || data.product || "",
 
 Number(data.price) / 100,
 
 "opłacone",
 
-session.id
+session.id,
+
+data.startDate || "",
+
+data.startHour || "",
+
+data.endDate || "",
+
+data.endHour || ""
 
 ],
 

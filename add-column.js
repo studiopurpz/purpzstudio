@@ -3,17 +3,25 @@ const sqlite3 = require("sqlite3").verbose()
 const db = new sqlite3.Database("./database.sqlite")
 
 
+db.serialize(()=>{
+
 db.run(`
-ALTER TABLE orders 
-ADD COLUMN stripe_id TEXT
-`, (err)=>{
+ALTER TABLE orders ADD COLUMN start_date TEXT
+`)
 
-if(err){
-    console.log(err)
-}else{
-    console.log("Dodano stripe_id")
-}
+db.run(`
+ALTER TABLE orders ADD COLUMN start_hour TEXT
+`)
 
-db.close()
+db.run(`
+ALTER TABLE orders ADD COLUMN end_date TEXT
+`)
+
+db.run(`
+ALTER TABLE orders ADD COLUMN end_hour TEXT
+`)
 
 })
+
+
+db.close(()=>console.log("Dodano kolumny"))
