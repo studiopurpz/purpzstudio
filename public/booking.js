@@ -817,12 +817,12 @@ total+=150
 
 if(
 mixPromo.value.trim()
-==="PURPZ15"
+==="WAKACJE26"
 ){
 
 total =
 Math.round(
-total*0.85
+total*0.70
 )
 
 }
