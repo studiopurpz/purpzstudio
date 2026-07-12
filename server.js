@@ -5,11 +5,23 @@ const cors = require('cors')
 const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser') // do webhooka
+const sqlite3 = require('sqlite3').verbose()
+const bcrypt = require('bcrypt')
+const session = require('express-session')
 
 const RES_FILE = path.join(__dirname, 'reservations.json')
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
 app.use(cors())
+app.use(session({
+
+secret:"PURPZ_SECRET_KEY",
+
+resave:false,
+
+saveUninitialized:false
+
+}))
 app.use(express.static(path.join(__dirname, 'public')))
 
 console.log("Stripe key:", process.env.STRIPE_KEY ? "OK" : "BRAK");
@@ -37,6 +49,118 @@ function saveReservations(reservations){
 app.get('/api/reservations', express.json(), (req,res)=>{
   const reservations = readReservations()
   res.json(reservations)
+})
+
+const db = new sqlite3.Database('./database.sqlite')
+
+
+db.run(`
+CREATE TABLE IF NOT EXISTS admins(
+
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+username TEXT UNIQUE,
+
+password TEXT
+
+)
+`)
+
+bcrypt.hash("test123",10,(err,hash)=>{
+
+db.run(
+`
+INSERT OR IGNORE INTO admins(username,password)
+VALUES(?,?)
+`,
+[
+"admin",
+hash
+]
+)
+
+})
+
+app.post('/admin-login',express.json(),(req,res)=>{
+
+
+const {
+username,
+password
+}=req.body
+
+
+
+db.get(
+"SELECT * FROM admins WHERE username=?",
+[username],
+async(err,user)=>{
+
+
+if(!user){
+
+return res.json({
+success:false
+})
+
+}
+
+
+const match =
+await bcrypt.compare(
+password,
+user.password
+)
+
+
+
+if(match){
+
+
+req.session.admin=true
+
+
+return res.json({
+success:true
+})
+
+
+}
+
+
+
+res.json({
+success:false
+})
+
+
+})
+
+})
+
+function adminAuth(req,res,next){
+
+if(req.session.admin){
+
+next()
+
+}else{
+
+res.status(401).json({
+error:"Brak dostępu"
+})
+
+}
+
+}
+
+
+app.get('/admin-check',adminAuth,(req,res)=>{
+
+res.json({
+logged:true
+})
+
 })
 
 // endpoint do tworzenia checkout session (tylko Stripe)
