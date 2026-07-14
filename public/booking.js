@@ -472,8 +472,8 @@ promoCodeInput.value.trim()
 
 
 
-if(code==="PURPZ15")
-discount=15
+if(code==="WAKACJE26")
+discount=30
 
 else
 discount=0
